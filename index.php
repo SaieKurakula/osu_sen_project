@@ -1,5 +1,6 @@
 <?php
-require_once '/nfs/stak/students/k/kurakuls/public_html/seniorproject/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/config/config.php';
 
 $loader = new Twig_Loader_Array(array(
     'index' => 'Hello {{ name }}!',
@@ -12,7 +13,23 @@ echo $twig->render('index', array('name' => 'Fabien'));
 
 echo(__DIR__);
 
-phpinfo();
+
+
+
+$link = mysqli_connect(DB_HOST, DB_USER, DB_PASS,DB_NAME)
+    or die("Error connecting to database server");
+
+mysqli_select_db($link, DB_NAME)
+    or die("Error selecting database: DB_NAME");
+
+echo 'Successfully connected to database!';
+
+mysql_close($link);
+
+echo ("Hello!");
+
+
+// phpinfo();
 
 
 // Template files
