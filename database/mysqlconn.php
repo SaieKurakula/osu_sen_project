@@ -16,7 +16,7 @@ class MysqlConn {
       if (!isset(self::$connections)) {
          self::$connections = array();
       }
-      
+
    }
 
    public function setConnection($connectionName, $connection) {
@@ -24,7 +24,8 @@ class MysqlConn {
    }
 
    public function getConnection($connectionName) {
-      return self::$connections[$connectionName];
+      return isset(self::$connections[$connectionName]) ?
+         self::$connections[$connectionName] : null;
    }
 
 }

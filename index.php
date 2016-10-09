@@ -1,41 +1,25 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/config/config.php';
 
-$loader = new Twig_Loader_Array(array(
-    'index' => 'Hello {{ name }}!',
-));
-$twig = new Twig_Environment($loader);
-
-echo $twig->render('index', array('name' => 'Fabien'));
+require_once __DIR__ . '/setup/setup.php';
 
 
+$loginRequired = request('loginRequired');
+$loginSubmitted = request('loginSubmitted');
 
-echo(__DIR__);
-
-
-
-
-$link = mysqli_connect(DB_HOST, DB_USER, DB_PASS,DB_NAME)
-    or die("Error connecting to database server");
-
-mysqli_select_db($link, DB_NAME)
-    or die("Error selecting database: DB_NAME");
-
-echo 'Successfully connected to database!';
-
-mysql_close($link);
-
-echo ("Hello!");
+if ($loginRequired) {
 
 
-// phpinfo();
+   // NEED TO ADD LOGIN PAGEBUILDER CLASS
+}
+else if ($loginSubmitted) {
+
+   // NEED TO ADD LOGIN VERIFICATION LOGIC (MAYBE PART OF THE LOGIN PAGEBUILDER CLASS)
+   // Check to make sure login is accurrate. If not, re-render log-in form with errors
+}
 
 
-// Template files
-// $loader = new Twig_Loader_Filesystem('/path/to/templates');
-// $twig = new Twig_Environment($loader, array(
-    // 'cache' => '/path/to/compilation_cache',
-// ));
+// What will go here is the main menu template.
 
-// echo $twig->render('index.html', array('name' => 'Fabien'));
+// NOTE:: Base will never be called directly. This is just to test.
+$base = getPageBuilderClass('Base');
+$base->renderTemplate('base.html');
