@@ -2,8 +2,8 @@
 
 define('PROJECT_PATH', realpath(dirname(__FILE__) . '/..'));
 
-require_once(PROJECT_PATH.'/config/config.php');
-require_once(PROJECT_PATH.'/database/mysqlconn.php');
+require_once(PROJECT_PATH.'/Resources/config/config.php');
+require_once(PROJECT_PATH.'/Helpers/database/mysqlconn.php');
 require_once(PROJECT_PATH.'/vendor/autoload.php');
 
 // Check if Default DB Connection has been created.
@@ -23,6 +23,18 @@ function request($requestVar) {
 }
 
 function getPageBuilderClass($pageBuilderClass) {
+
    require_once(PROJECT_PATH.'/PageBuilders/' . $pageBuilderClass . '.php');
-   return new $pageBuilderClass();
+
+   $page = null;
+
+   if ($pageBuilderClass=='Login') {
+      $page = new $pageBuilderClass(true);
+   }
+   else {
+      $page = new $pageBuilderClass();
+   }
+
+   return $page;
+
 }

@@ -6,14 +6,14 @@ class Base {
 
    protected $DB;
 
-   function __construct() {
+   function __construct($loginPage=false) {
 
       // Verifies that user has logged in. If not, then it will return to the main page
       // and go through log in procedure
-      if (!isset($_SESSION['userID'])) {
+      if (!isset($_SESSION['userID']) && !$loginPage) {
          // NEED TO BUILD LOG IN FUNCTIONALITY AND THEN UNCOMMENT
 
-         // header('Location: index.php?loginRequired=true');
+         // header('Location: login.php');
       }
 
       $this->buildTwig();
@@ -21,7 +21,7 @@ class Base {
    }
 
    protected function buildTwig() {
-      $loader = new Twig_Loader_Filesystem(PROJECT_PATH.'/templates/');
+      $loader = new Twig_Loader_Filesystem(PROJECT_PATH.'/Resources/templates/');
       $this->Twig = new Twig_Environment($loader);
    }
 
