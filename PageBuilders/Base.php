@@ -13,7 +13,7 @@ class Base {
       if (!isset($_SESSION['userID']) && !$loginPage) {
          // NEED TO BUILD LOG IN FUNCTIONALITY AND THEN UNCOMMENT
 
-         // header('Location: login.php');
+         header('Location: login.php');
       }
 
       $this->buildTwig();

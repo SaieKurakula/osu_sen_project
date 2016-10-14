@@ -2,8 +2,18 @@
 <html>
     <head>
         {% block head %}
-            <link rel="stylesheet" href="style.css" />
-            <title>{% block title %}{% endblock %} - My Webpage</title>
+            {% block stylesheet %}
+            
+               <link rel="stylesheet" href="style.css" />
+               <link rel="stylesheet" href="Resources/public/css/bootstrap.min.css" />
+            {% endblock %}
+
+            {% block javascript %}
+               <script src="Resources/public/js/jquery.js"></script>
+               <script src="Resources/public/js/main.js"></script>
+            {% endblock %}
+        
+            <title>{% block title %}Base Page{% endblock %}</title>
         {% endblock %}
     </head>
     <body>

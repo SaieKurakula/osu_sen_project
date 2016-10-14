@@ -8,6 +8,7 @@ class Login extends Base {
 
    function __construct($loginPage) {
       parent::__construct($loginPage);
+      echo "IN LOGIN!";
    }
 
 }
