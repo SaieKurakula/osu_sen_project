@@ -23,7 +23,7 @@ class MysqlConn {
       self::$connections[$connectionName] = $connection;
    }
 
-   public function getConnection($connectionName) {
+   public function getConnection($connectionName='Default') {
       return isset(self::$connections[$connectionName]) ?
          self::$connections[$connectionName] : null;
    }

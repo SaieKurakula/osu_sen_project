@@ -8,7 +8,19 @@ class Login extends Base {
 
    function __construct($loginPage) {
       parent::__construct($loginPage);
-      echo "IN LOGIN!";
    }
 
+   public function getActorsTest() {
+
+$query = <<<SQL
+   SELECT
+      *
+   FROM
+      actor
+SQL;
+
+      return $this->DB->execute($query);
+      
+   }
+   
 }

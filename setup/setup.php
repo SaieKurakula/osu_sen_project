@@ -38,3 +38,13 @@ function getPageBuilderClass($pageBuilderClass) {
    return $page;
 
 }
+
+
+function getHelperClass($pathInHelpers, $helperClass) {
+
+   require_once(PROJECT_PATH.'/Helpers/'. $pathInHelpers . $helperClass . '.php');
+
+   return new $helperClass();
+
+}
+
