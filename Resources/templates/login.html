@@ -12,9 +12,22 @@
 
 {% block content %}
    <h1>Login Page</h1>
-   <p class="important">
-     Login Page
-   </p>
+
+   
+   {% for message in messages %}
+      <h2>{{ message }}</h2>
+   {% endfor %}
+
+   {% for user in users %}
+      <ul>
+         {% for key,value in user %}
+         <li>{{ key }} : {{ value }}</li>
+         
+         
+         {% endfor %}
+      </ul>
+   {% endfor %}
+   
    
    <button type="button" class="btn btn-danger">Danger</button>
 {% endblock %}

@@ -9,11 +9,6 @@ class Base {
 
    function __construct($loginPage=false) {
 
-      // Verifies that user has logged in. If not, then it will return to the main page
-      // and go through log in procedure
-      if (!isset($_SESSION['userID']) && !$loginPage) {
-         header('Location: login.php');
-      }
 
       $this->buildDB();
       $this->buildTwig();

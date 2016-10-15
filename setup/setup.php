@@ -17,6 +17,19 @@ if (!(MysqlConn::getConnection('Default'))) {
 
 }
 
+session_start();
+
+// check if we're on the login page
+$loginPage = strpos(basename($_SERVER[REQUEST_URI]), 'login.php') !== false;
+
+// Verifies that user has logged in. If not, then it will return to the main page
+// and go through log in procedure
+if (!isset($_SESSION['username']) && !$loginPage) {
+   header('Location: login.php');
+}
+
+
+
 function request($requestVar) {
    $returnValue = isset($_REQUEST[$requestVar]) ? $_REQUEST[$requestVar] : null;
    return $returnValue;
@@ -43,7 +56,6 @@ function getPageBuilderClass($pageBuilderClass) {
 function getHelperClass($pathInHelpers, $helperClass) {
 
    require_once(PROJECT_PATH.'/Helpers/'. $pathInHelpers . $helperClass . '.php');
-
    return new $helperClass();
 
 }

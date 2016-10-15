@@ -4,7 +4,19 @@ require_once __DIR__ . '/setup/setup.php';
 
 $login = getPageBuilderClass('Login');
 
-$actors = $login->getActorsTest();
-echo(count($actors));
+$users = $login->getUsersTest();
 
-$login->renderTemplate('login.html');
+// $username = 'SaieTest5';
+// $password = 'PassTest5';
+// $verifypassword = 'PassTest5';
+// $email = 'SaieTest5@test.com';
+
+$messages = '';
+if ($login->registerUser($username, $password, $verifypassword, $email)) {
+   $messages = $login->getSuccessMsg();
+}
+else {
+   $messages = $login->getErrorMsg();
+}
+
+$login->renderTemplate('login.html',array('users'=>$users, 'messages' => $messages));
