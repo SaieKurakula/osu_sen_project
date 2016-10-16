@@ -19,4 +19,13 @@ else {
    $messages = $login->getErrorMsg();
 }
 
+var_dump($_SESSION);
+
+
+
 $login->renderTemplate('login.html',array('users'=>$users, 'messages' => $messages));
+
+
+
+
+

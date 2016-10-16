@@ -20,9 +20,11 @@ $query = <<<SQL
       *
    FROM
       users
+   Where 
+   id= ?
 SQL;
 
-      return $this->DB->execute($query);
+      return $this->DB->execute($query, array('10'));
       
    }
 

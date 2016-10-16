@@ -29,7 +29,6 @@ if (!isset($_SESSION['username']) && !$loginPage) {
 }
 
 
-
 function request($requestVar) {
    $returnValue = isset($_REQUEST[$requestVar]) ? $_REQUEST[$requestVar] : null;
    return $returnValue;
