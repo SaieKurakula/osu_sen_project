@@ -20,11 +20,9 @@ $query = <<<SQL
       *
    FROM
       users
-   Where 
-   id= ?
 SQL;
 
-      return $this->DB->execute($query, array('10'));
+      return $this->DB->execute($query);
       
    }
 
@@ -48,13 +46,27 @@ SQL;
    protected function startSession($username) {
       // Stores Session in session table
       $this->authenticator->newsession($username);
-      
-      // Local Session
-      // startSetupSession();
-      
+
       $_SESSION['username'] = $username;
       
       
+   }
+   
+   public function logOut() {
+      $sessionHash = $this->authenticator->getSessionHash($_SESSION['username']);
+      
+      unset($_SESSION['username']);
+      return $this->authenticator->deletesession($sessionHash);
+      
+   }
+
+   public function login($username, $password) {
+      return $this->authenticator->login($username, $password);
+   }
+   
+   public function activate($username, $key) {
+      return $this->authenticator->activate($username, $key);
+      $_SESSION['username'] = $username;
    }
  
 }

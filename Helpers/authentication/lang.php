@@ -20,6 +20,7 @@ $lang['en']['auth']['login_attempts_remaining'] = "%d attempts remaining !";
 $lang['en']['auth']['login_account_inactive'] = "Account is not activated !";
 $lang['en']['auth']['login_success'] = "You are now logged in !";
 $lang['en']['auth']['login_already'] = "You are already logged in !";
+$lang['en']['auth']['logout_success'] = "You have been logged out !";
 
 $lang['en']['auth']['register_username_empty'] = "Username field is empty !";
 $lang['en']['auth']['register_username_short'] = "Username is too short !";

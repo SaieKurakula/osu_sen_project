@@ -52,7 +52,7 @@ class auth
 					// Input is valid
 				
 					$password = $this->hashpass($password);
-				
+
 					$query = $this->mysqli->prepare("SELECT isactive FROM users WHERE username = ? AND password = ?");
 					$query->bind_param("ss", $username, $password);
 					$query->bind_result($isactive);
@@ -280,11 +280,22 @@ class auth
 		setcookie("auth_session", $hash, $expiretime);
 	}
 	
+   public function getSessionHash($username) {
+
+		$query = $this->mysqli->prepare("SELECT hash FROM sessions WHERE username=?");
+		$query->bind_param("s", $username);
+		$query->bind_result($sessionHash);
+		$query->execute();
+		$query->fetch();
+		$query->close();
+      
+      return $sessionHash;
+   }
+   
 	/*
 	* Deletes the user's session based on hash
 	* @param string $hash
 	*/
-	
 	function deletesession($hash)
 	{
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
@@ -322,6 +333,9 @@ class auth
 			
 			setcookie("auth_session", $hash, time() - 3600);
 		}
+      
+      $this->successmsg[] = $lang[$loc]['auth']['logout_success'];      
+
 	}
 	
 	/*

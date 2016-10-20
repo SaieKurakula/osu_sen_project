@@ -6,20 +6,86 @@ $login = getPageBuilderClass('Login');
 
 $users = $login->getUsersTest();
 
-// $username = 'SaieTest5';
-// $password = 'PassTest5';
-// $verifypassword = 'PassTest5';
-// $email = 'SaieTest5@test.com';
-
 $messages = '';
-if ($login->registerUser($username, $password, $verifypassword, $email)) {
+
+
+// var_dump($_SESSION);
+
+// echo"here!";
+// var_dump($users);
+
+
+/************************
+ * Registration Test
+ *********************/
+ 
+// $username = 'SaieTest8';
+// $password = 'PassTest8';
+// $verifypassword = 'PassTest8';
+// $email = 'kurakuls+Test8@oregonstate.edu';
+
+
+// if ($login->registerUser($username, $password, $verifypassword, $email)) {
+   // $messages = $login->getSuccessMsg();
+// }
+// else {
+   // $messages = $login->getErrorMsg();
+// }
+
+/************************
+ * END Registration Test
+ *********************/
+
+
+/************************
+ * Activation Test
+ *********************/
+ 
+ 
+if ($login->activate(request('username'), request('key'))) {
    $messages = $login->getSuccessMsg();
 }
 else {
    $messages = $login->getErrorMsg();
 }
 
-var_dump($_SESSION);
+/************************
+ * End Activation Test
+ *********************/
+
+
+ 
+/************************
+ * Login Test
+ *********************/
+
+// if ($login->login($username, $password)) {
+   // $messages = $login->getSuccessMsg();
+// }
+// else {
+   // $messages = $login->getErrorMsg();
+// }
+
+/************************
+ * End Login Test
+ *********************/
+ 
+ 
+/************************
+ * Logout Test
+ *********************/
+
+
+// $login->logout();
+// $messages = $login->getSuccessMsg();
+
+
+/************************
+ * END Logout Test
+ *********************/
+
+
+ 
 
 
 
