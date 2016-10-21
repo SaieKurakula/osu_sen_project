@@ -7,7 +7,7 @@ class Base {
    protected $Twig;
 
 
-   function __construct($loginPage=false) {
+   function __construct() {
 
 
       $this->buildDB();

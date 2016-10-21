@@ -38,16 +38,8 @@ function getPageBuilderClass($pageBuilderClass) {
 
    require_once(PROJECT_PATH.'/PageBuilders/' . $pageBuilderClass . '.php');
 
-   $page = null;
+   return new $pageBuilderClass();
 
-   if ($pageBuilderClass=='Login') {
-      $page = new $pageBuilderClass(true);
-   }
-   else {
-      $page = new $pageBuilderClass();
-   }
-
-   return $page;
 
 }
 
