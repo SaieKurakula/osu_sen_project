@@ -34,20 +34,13 @@ function request($requestVar) {
    return $returnValue;
 }
 
-function getPageBuilderClass($pageBuilderClass) {
-
-   require_once(PROJECT_PATH.'/PageBuilders/' . $pageBuilderClass . '.php');
-
+function getPageBuilderClass($pathInPageBuilders, $pageBuilderClass) {
+   require_once(PROJECT_PATH.'/PageBuilders/'. $pathInPageBuilders . $pageBuilderClass . '.php');
    return new $pageBuilderClass();
-
-
 }
 
-
 function getHelperClass($pathInHelpers, $helperClass) {
-
    require_once(PROJECT_PATH.'/Helpers/'. $pathInHelpers . $helperClass . '.php');
    return new $helperClass();
-
 }
 

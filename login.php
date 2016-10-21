@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/setup/setup.php';
 
-$login = getPageBuilderClass('Login');
+$login = getPageBuilderClass('','Login');
 
 $users = $login->getUsersTest();
 
@@ -42,12 +42,12 @@ $messages = '';
  *********************/
  
  
-if ($login->activate(request('username'), request('key'))) {
-   $messages = $login->getSuccessMsg();
-}
-else {
-   $messages = $login->getErrorMsg();
-}
+// if ($login->activate(request('username'), request('key'))) {
+   // $messages = $login->getSuccessMsg();
+// }
+// else {
+   // $messages = $login->getErrorMsg();
+// }
 
 /************************
  * End Activation Test
