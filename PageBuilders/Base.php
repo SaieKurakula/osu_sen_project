@@ -6,10 +6,7 @@ class Base {
 
    protected $Twig;
 
-
    function __construct() {
-
-
       $this->buildDB();
       $this->buildTwig();
    }

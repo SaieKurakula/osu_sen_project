@@ -2,56 +2,17 @@
 
 require_once __DIR__ . '/setup/setup.php';
 
-$login = getPageBuilderClass('','Login');
+$login = getPageBuilderClass('Authentication/','Login');
+
+
+$logout = getPageBuilderClass('Authentication/','Logout');
 
 $users = $login->getUsersTest();
 
-$messages = '';
+$messages = [];
 
+$logout->logout();
 
-// var_dump($_SESSION);
-
-// echo"here!";
-// var_dump($users);
-
-
-/************************
- * Registration Test
- *********************/
- 
-// $username = 'SaieTest8';
-// $password = 'PassTest8';
-// $verifypassword = 'PassTest8';
-// $email = 'kurakuls+Test8@oregonstate.edu';
-
-
-// if ($login->registerUser($username, $password, $verifypassword, $email)) {
-   // $messages = $login->getSuccessMsg();
-// }
-// else {
-   // $messages = $login->getErrorMsg();
-// }
-
-/************************
- * END Registration Test
- *********************/
-
-
-/************************
- * Activation Test
- *********************/
- 
- 
-// if ($login->activate(request('username'), request('key'))) {
-   // $messages = $login->getSuccessMsg();
-// }
-// else {
-   // $messages = $login->getErrorMsg();
-// }
-
-/************************
- * End Activation Test
- *********************/
 
 
  

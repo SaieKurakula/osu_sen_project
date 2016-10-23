@@ -28,7 +28,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 CREATE TABLE IF NOT EXISTS `activitylog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` datetime NOT NULL,
-  `username` varchar(30) NOT NULL,
+  `username` varchar(100) NOT NULL,
   `action` varchar(100) NOT NULL,
   `additionalinfo` varchar(500) NOT NULL DEFAULT 'none',
   `ip` varchar(15) NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `attempts` (
 CREATE TABLE IF NOT EXISTS `sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL,
-  `username` varchar(30) NOT NULL,
+  `username` varchar(100) NOT NULL,
   `hash` varchar(32) NOT NULL,
   `expiredate` datetime NOT NULL,
   `ip` varchar(15) NOT NULL,

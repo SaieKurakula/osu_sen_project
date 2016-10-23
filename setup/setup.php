@@ -19,12 +19,29 @@ if (!(MysqlConn::getConnection('Default'))) {
 
 session_start();
 
-// check if we're on the login page
-$loginPage = strpos(basename($_SERVER[REQUEST_URI]), 'login.php') !== false;
+function isAccessiblePage() {
+
+   $unauthenticatedPages = array (
+      'login.php',
+      'activation.php',
+      'adduser.php' // THIS IS TEMP WE NEED TO REMOVE THIS
+   );
+
+   $currentPage = basename($_SERVER[REQUEST_URI]);
+
+   foreach($unauthenticatedPages as $page) {
+      if (strpos($currentPage, $page) !== false) {
+         return true;
+      }
+   }
+
+   return false;
+
+}
 
 // Verifies that user has logged in. If not, then it will return to the main page
 // and go through log in procedure
-if (!isset($_SESSION['username']) && !$loginPage) {
+if (!isset($_SESSION['username']) && !isAccessiblePage()) {
    header('Location: login.php');
 }
 

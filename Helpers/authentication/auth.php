@@ -9,23 +9,23 @@ class auth
 	function __construct()
 	{
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
-	
-		// $this->mysqli = new mysqli($db['host'], $db['user'], $db['pass'], $db['name']); 
 		$this->mysqli = MysqlConn::getConnection();
 	}
 	
 	/*
 	* Log user in via MySQL Database
-	* @param string $username
+	* @param string $email
 	* @param string $password
 	* @return boolean
 	*/
 	
-	function login($username, $password)
+	function login($email, $password)
 	{
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
-		require_once(PROJECT_PATH.'/Helpers/authentication/lang.php');
-		
+		include(PROJECT_PATH.'/Helpers/authentication/lang.php');
+      
+      $username = $email;
+	
 		if(!isset($_COOKIE["auth_session"]))
 		{
 			$attcount = $this->getattempt($_SERVER['REMOTE_ADDR']);
@@ -42,7 +42,7 @@ class auth
 				// Input verification :
 			
 				if(strlen($username) == 0) { $this->errormsg[] = $lang[$loc]['auth']['login_username_empty']; return false; }
-				elseif(strlen($username) > 30) { $this->errormsg[] = $lang[$loc]['auth']['login_username_long']; return false; }
+				elseif(strlen($username) > 100) { $this->errormsg[] = $lang[$loc]['auth']['login_username_long']; return false; }
 				elseif(strlen($username) < 3) { $this->errormsg[] = $lang[$loc]['auth']['login_username_short']; return false; }
 				elseif(strlen($password) == 0) { $this->errormsg[] = $lang[$loc]['auth']['login_password_empty']; return false; }
 				elseif(strlen($password) > 30) { $this->errormsg[] = $lang[$loc]['auth']['login_password_short']; return false; }
@@ -128,26 +128,18 @@ class auth
 	* @return boolean
 	*/
 	
-	function register($username, $password, $verifypassword, $email)
+	function register($firstname, $lastname, $email, $accessLevel)
 	{
 		
       include(PROJECT_PATH.'/Helpers/authentication/config.php');
-      require_once(PROJECT_PATH.'/Helpers/authentication/lang.php');
+      include(PROJECT_PATH.'/Helpers/authentication/lang.php');
+
+      $username = $email;
 
 		if(!isset($_COOKIE["auth_session"]))
 		{
-		
-			// Input Verification :
-		
-			if(strlen($username) == 0) { $this->errormsg[] = $lang[$loc]['auth']['register_username_empty']; }
-			elseif(strlen($username) > 30) { $this->errormsg[] = $lang[$loc]['auth']['register_username_long']; }
-			elseif(strlen($username) < 3) { $this->errormsg[] = $lang[$loc]['auth']['register_username_short']; }
-			if(strlen($password) == 0) { $this->errormsg[] = $lang[$loc]['auth']['register_password_empty']; }
-			elseif(strlen($password) > 30) { $this->errormsg[] = $lang[$loc]['auth']['register_password_long']; }
-			elseif(strlen($password) < 5) { $this->errormsg[] = $lang[$loc]['auth']['register_password_short']; }
-			elseif($password !== $verifypassword) { $this->errormsg[] = $lang[$loc]['auth']['register_password_nomatch']; }
-			elseif(strstr($password, $username)) { $this->errormsg[] = $lang[$loc]['auth']['register_password_username']; }
-			if(strlen($email) == 0) { $this->errormsg[] = $lang[$loc]['auth']['register_email_empty']; }
+
+         if(strlen($email) == 0) { $this->errormsg[] = $lang[$loc]['auth']['register_email_empty']; }
 			elseif(strlen($email) > 100) { $this->errormsg[] = $lang[$loc]['auth']['register_email_long']; }
 			elseif(strlen($email) < 5) { $this->errormsg[] = $lang[$loc]['auth']['register_email_short']; }
 			elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)) { $this->errormsg[] = $lang[$loc]['auth']['register_email_invalid']; }
@@ -155,14 +147,13 @@ class auth
 			if(count($this->errormsg) == 0)
 			{
 				// Input is valid
-			
 				$query = $this->mysqli->prepare("SELECT * FROM users WHERE username=?");
 				$query->bind_param("s", $username);
 				$query->execute();
 				$query->store_result();
 				$count = $query->num_rows;
 				$query->close();
-			
+	
 				if($count != 0)
 				{
 					// Username already exists
@@ -176,6 +167,8 @@ class auth
 				else 
 				{
 					// Username is not taken
+
+
 					
 					$query = $this->mysqli->prepare("SELECT * FROM users WHERE email=?");
 					$query->bind_param("s", $email);
@@ -197,21 +190,31 @@ class auth
 					else 
 					{
 						// Email address isn't already used
-					
+
+                  $password = $this->generateTempPassword();
+
+                  $tempPassword = $password;
+                  
 						$password = $this->hashpass($password);
 						$activekey = $this->randomkey(15);	 
 					
-						$query = $this->mysqli->prepare("INSERT INTO users (username, password, email, activekey) VALUES (?, ?, ?, ?)");
-						$query->bind_param("ssss", $username, $password, $email, $activekey);
+						$query = $this->mysqli->prepare(
+                     "INSERT INTO users (username, password, email, activekey, firstname, lastname)
+                     VALUES (?, ?, ?, ?, ?, ?)"
+                  );
+						$query->bind_param("ssssss", $username, $password, $email, $activekey, $firstname, $lastname);
 						$query->execute();
 						$query->close();
-						
+
 						$message_from = $auth_conf['email_from'];
 						$message_subj = $auth_conf['site_name'] . " - Account activation required !";
-						$message_cont = "Hello {$username}<br/><br/>";
-						$message_cont .= "You recently registered a new account on " . $auth_conf['site_name'] . "<br/>";
+						$message_cont = "Hello {$firstname} {$lastname}<br/><br/>";
+						$message_cont .= "You were recently registered for a new account on " . $auth_conf['site_name'] . "<br/>";
 						$message_cont .= "To activate your account please click the following link<br/><br/>";
-						$message_cont .= "<b><a href=\"" . $auth_conf['base_url'] . "?page=activate&username={$username}&key={$activekey}\">Activate my account</a></b>";
+						$message_cont .= "<b><a href=\"" . $auth_conf['base_url'] . "?page=activate&key={$activekey}\">Activate my account</a></b><br />";
+                  $message_cont .= "Log in using the email: ". $email."<br />";
+                  $message_cont .= "and the temporary password: ". $tempPassword."<br /><br />";
+                  $message_cont .= "Once you log in, you will be asked to reset your password to one of your choosing.";
 						$message_head = "From: {$message_from}" . "\r\n";
 						$message_head .= "MIME-Version: 1.0" . "\r\n";
 						$message_head .= "Content-type: text/html; charset=iso-8859-1" . "\r\n";
@@ -220,7 +223,7 @@ class auth
 					
 						$this->LogActivity($username, "AUTH_REGISTER_SUCCESS", "Account created and activation email sent");
 					
-						$this->successmsg[] = $lang[$loc]['auth']['register_success'];
+						$this->successmsg[] = $lang[$loc]['auth']['register_success'] . $email;
 						
 						return true;					
 					}
@@ -228,7 +231,7 @@ class auth
 			}
 			else 
 			{
-				return false;
+            return false;
 			}
 		}
 		else 
@@ -246,12 +249,16 @@ class auth
 	* @param string $username
 	*/
 	
-	function newsession($username)
+	function newsession($email)
 	{
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
 	
 		$hash = md5(microtime());
 		
+      $username = $email;
+      
+      $_SESSION['username'] = $username;
+      
 		// Fetch User ID :		
 		
 		$query = $this->mysqli->prepare("SELECT id FROM users WHERE username=?");
@@ -280,8 +287,10 @@ class auth
 		setcookie("auth_session", $hash, $expiretime);
 	}
 	
-   public function getSessionHash($username) {
+   public function getSessionHash($email) {
 
+      $username = $email;
+   
 		$query = $this->mysqli->prepare("SELECT hash FROM sessions WHERE username=?");
 		$query->bind_param("s", $username);
 		$query->bind_result($sessionHash);
@@ -299,7 +308,7 @@ class auth
 	function deletesession($hash)
 	{
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
-		require_once(PROJECT_PATH.'/Helpers/authentication/lang.php');
+		include(PROJECT_PATH.'/Helpers/authentication/lang.php');
 	
 		$query = $this->mysqli->prepare("SELECT username FROM sessions WHERE hash=?");
 		$query->bind_param("s", $hash);
@@ -347,7 +356,7 @@ class auth
 	function sessioninfo($hash)
 	{
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
-		require_once(PROJECT_PATH.'/Helpers/authentication/lang.php');
+		include(PROJECT_PATH.'/Helpers/authentication/lang.php');
 	
 		$query = $this->mysqli->prepare("SELECT uid, username, expiredate, ip FROM sessions WHERE hash=?");
 		$query->bind_param("s", $hash);
@@ -471,16 +480,18 @@ class auth
 	
 	/*
 	* Activate a user's account
-	* @param string $username
+	* @param string $email
 	* @param string $key
 	* @return boolean
 	*/
 	
-	function activate($username, $key)
+	function activate($email, $password, $key)
 	{
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
-		require_once(PROJECT_PATH.'/Helpers/authentication/lang.php');
+		include(PROJECT_PATH.'/Helpers/authentication/lang.php');
 	
+      $username = $email;
+   
 		// Input verification
 	
 		if(strlen($username) == 0) { $this->errormsg[] = $lang[$loc]['auth']['activate_username_empty']; return false; }
@@ -493,9 +504,9 @@ class auth
 		{
 			// Input is valid
 			
-			$query = $this->mysqli->prepare("SELECT isactive, activekey FROM users WHERE username=?");
+			$query = $this->mysqli->prepare("SELECT isactive, password, activekey FROM users WHERE username=?");
 			$query->bind_param("s", $username);
-			$query->bind_result($isactive, $activekey);
+			$query->bind_result($isactive, $hashedPassword, $activekey);
 			$query->execute();
 			$query->store_result();
 			$count = $query->num_rows;
@@ -515,25 +526,26 @@ class auth
 			else
 			{
 				// User exists
-				
 				if($isactive == 1)
 				{
 					// Account is already activated
-					
 					$this->LogActivity($username, "AUTH_ACTIVATE_FAIL", "Account already activated");					
-					
 					$this->errormsg[] = $lang[$loc]['auth']['activate_account_activated'];
-					
 					return true;
 				}
 				else
 				{
+
+               // Password Doesn't match
+					if ($this->hashpass($password) != $hashedPassword) {
+                  $this->errormsg[] = $lang[$loc]['auth']['register_password_nomatch'];
+                  return false;
+               }
+
 					// Account isn't activated
-					
 					if($key == $activekey)
 					{
 						// Activation keys match
-						
 						$new_isactive = 1;
 						$new_activekey = "0";
 						
@@ -565,18 +577,20 @@ class auth
 	
 	/*
 	* Changes a user's password, providing the current password is known
-	* @param string $username
+	* @param string $email
 	* @param string $currpass
 	* @param string $newpass
 	* @param string $verifynewpass
 	* @return boolean
 	*/
 	
-	function changepass($username, $currpass, $newpass, $verifynewpass)
+	function changepass($email, $currpass, $newpass, $verifynewpass)
 	{
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
-		require_once(PROJECT_PATH.'/Helpers/authentication/lang.php');
+		include(PROJECT_PATH.'/Helpers/authentication/lang.php');
 		
+      $username = $email;
+      
 		if(strlen($username) == 0) { $this->errormsg[] = $lang[$loc]['auth']['changepass_username_empty']; }
 		elseif(strlen($username) > 30) { $this->errormsg[] = $lang[$loc]['auth']['changepass_username_long']; }
 		elseif(strlen($username) < 3) { $this->errormsg[] = $lang[$loc]['auth']['changepass_username_short']; }
@@ -644,19 +658,18 @@ class auth
 	
 	/*
 	* Changes the stored email address based on username
-	* @param string $username
+	* @param string $email
 	* @param string $email
 	* @return boolean
 	*/
 	
-	function changeemail($username, $email)
+	function changeemail($email, $email)
 	{
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
-		require_once(PROJECT_PATH.'/Helpers/authentication/lang.php');
+		include(PROJECT_PATH.'/Helpers/authentication/lang.php');
 		
-		if(strlen($username) == 0) { $this->errormsg[] = $lang[$loc]['auth']['changeemail_username_empty']; }
-		elseif(strlen($username) > 30) { $this->errormsg[] = $lang[$loc]['auth']['changeemail_username_long']; }
-		elseif(strlen($username) < 3) { $this->errormsg[] = $lang[$loc]['auth']['changeemail_username_short']; }
+      $username = $email;
+
 		if(strlen($email) == 0) { $this->errormsg[] = $lang[$loc]['auth']['changeemail_email_empty']; }
 		elseif(strlen($email) > 100) { $this->errormsg[] = $lang[$loc]['auth']['changeemail_email_long']; }
 		elseif(strlen($email) < 5) { $this->errormsg[] = $lang[$loc]['auth']['changeemail_email_short']; }
@@ -715,7 +728,7 @@ class auth
 	/*
 	* Give the user the ability to change their password if the current password is forgotten
 	* by sending email to the email address associated to that user
-	* @param string $username
+	* @param string $email
 	* @param string $email
 	* @param string $key
 	* @param string $newpass
@@ -723,11 +736,13 @@ class auth
 	* @return boolean
 	*/
 	
-	function resetpass($username = '0', $email ='0', $key = '0', $newpass = '0', $verifynewpass = '0')
+	function resetpass($email = '0', $key = '0', $newpass = '0', $verifynewpass = '0')
 	{
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
-		require_once(PROJECT_PATH.'/Helpers/authentication/lang.php');
+		include(PROJECT_PATH.'/Helpers/authentication/lang.php');
 	
+      $username = $email;
+   
 		$attcount = $this->getattempt($_SERVER['REMOTE_ADDR']);
 			
 		if($attcount >= $auth_conf['max_attempts'])
@@ -883,16 +898,18 @@ class auth
 	
 	/*
 	* Checks if the reset key is correct for provided username
-	* @param string $username
+	* @param string $email
 	* @param string $key
 	* @return boolean
 	*/
 	
-	function checkresetkey($username, $key)
+	function checkresetkey($email, $key)
 	{
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
-		require_once(PROJECT_PATH.'/Helpers/authentication/lang.php');
+		include(PROJECT_PATH.'/Helpers/authentication/lang.php');
 		
+      $username = $email;
+      
 		$attcount = $this->getattempt($_SERVER['REMOTE_ADDR']);
 			
 		if($attcount >= $auth_conf['max_attempts'])
@@ -965,18 +982,20 @@ class auth
 	
 	/*
 	* Deletes a user's account. Requires user's password
-	* @param string $username
+	* @param string $email
 	* @param string $password
 	* @return boolean
 	*/
 	
-	function deleteaccount($username, $password)
+	function deleteaccount($email, $password)
 	{
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
-		require_once(PROJECT_PATH.'/Helpers/authentication/lang.php');
+		include(PROJECT_PATH.'/Helpers/authentication/lang.php');
 	
+      $username = $email;
+   
 		if(strlen($username) == 0) { $this->errormsg[] = $lang[$loc]['auth']['deleteaccount_username_empty']; }
-		elseif(strlen($username) > 30) { $this->errormsg[] = $lang[$loc]['auth']['deleteaccount_username_long']; }
+		elseif(strlen($username) > 100 ) { $this->errormsg[] = $lang[$loc]['auth']['deleteaccount_username_long']; }
 		elseif(strlen($username) < 3) { $this->errormsg[] = $lang[$loc]['auth']['deleteaccount_username_short']; }
 		if(strlen($password) == 0) { $this->errormsg[] = $lang[$loc]['auth']['deleteaccount_password_empty']; }
 		elseif(strlen($password) > 30) { $this->errormsg[] = $lang[$loc]['auth']['deleteaccount_password_long']; }
@@ -1141,20 +1160,22 @@ class auth
 	
 	/*
 	* Logs users actions on the site to database for future viewing
-	* @param string $username
+	* @param string $email
 	* @param string $action
 	* @param string $additionalinfo
 	* @return boolean
 	*/
 	
-	function LogActivity($username, $action, $additionalinfo = "none")
+	function LogActivity($email, $action, $additionalinfo = "none")
 	{
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
-		require_once(PROJECT_PATH.'/Helpers/authentication/lang.php');
+		include(PROJECT_PATH.'/Helpers/authentication/lang.php');
 	
+      $username = $email;
+   
 		if(strlen($username) == 0) { $username = "GUEST"; }
 		elseif(strlen($username) < 3) { $this->errormsg[] = $lang[$loc]['auth']['logactivity_username_short']; return false; }
-		elseif(strlen($username) > 30) { $this->errormsg[] = $lang[$loc]['auth']['logactivity_username_long']; return false; }
+		elseif(strlen($username) > 100) { $this->errormsg[] = $lang[$loc]['auth']['logactivity_username_long']; return false; }
 		
 		if(strlen($action) == 0) { $this->errormsg[] = $lang[$loc]['auth']['logactivity_action_empty']; return false; }
 		elseif(strlen($action) < 3) { $this->errormsg[] = $lang[$loc]['auth']['logactivity_action_short']; return false; }
@@ -1190,5 +1211,20 @@ class auth
 		$password = hash("SHA512", base64_encode(str_rot13(hash("SHA512", str_rot13($auth_conf['salt_1'] . $password . $auth_conf['salt_2'])))));
 		return $password;
 	}
+   
+   protected function generateTempPassword($length=10) {
+
+      $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      $charactersLength = strlen($characters);
+      $randomString = '';
+      for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+      }
+      
+      
+      
+      return $randomString;
+   }
+   
 }
 

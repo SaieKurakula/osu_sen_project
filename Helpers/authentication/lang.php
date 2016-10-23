@@ -36,7 +36,7 @@ $lang['en']['auth']['register_email_long'] = "Email is too long !";
 $lang['en']['auth']['register_email_invalid'] = "Email is invalid !";
 $lang['en']['auth']['register_username_exist'] = "Username is already in use !";
 $lang['en']['auth']['register_email_exist'] = "Email is already in use !";
-$lang['en']['auth']['register_success'] = "New Account Created ! Activation email sent to your email address.";
+$lang['en']['auth']['register_success'] = "New Account Created ! Activation email sent to email address: ";
 $lang['en']['auth']['register_email_loggedin'] = "You are currently logged in !";
 
 $lang['en']['auth']['deletesession_invalid'] = "Invalid Session Hash !";

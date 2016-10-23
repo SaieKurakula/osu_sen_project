@@ -5,7 +5,7 @@
 
 
 class DB {
-   
+
    protected $link;
 
    protected $query;
@@ -13,7 +13,7 @@ class DB {
    protected $arguments;
 
    protected $dbHandler;
-   
+
    function __construct($customLink=null) {
       $this->link = isset($customLink) ? $customLink : MysqlConn::getConnection();
       $this->dbHandler = new mysqliDb($this->link);
@@ -22,17 +22,17 @@ class DB {
    public function setQuery($query) {
       $this->query = $query;
    }
-   
+
    public function setArguments($arguments) {
       $this->arguments = $arguments;
    }
-   
+
    public function execute($query=null,$arguments=null) {
       $this->query = isset($query) ? $query : $this->query;
       $this->arguments = isset($arguments) ? $arguments : $this->arguments;
-      
+
       $results = null;
-      
+
       if (count($this->arguments) > 0) {
          $results = $this->dbHandler->rawQuery($this->query, $this->arguments);
       }
@@ -43,7 +43,7 @@ class DB {
       return $results;
 
    }
-   
+
    public function setLink($linkName) {
       $this->link = $linkName;
    }
@@ -55,5 +55,5 @@ class DB {
    public function getdbHandler() {
       return $this->dbHandler;
    }
-   
+
 }
