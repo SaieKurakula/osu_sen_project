@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% import "macros/forms.html" as forms %}
+
 {% block title %}Login{% endblock %}
 
 {% block head %}
@@ -13,6 +15,9 @@
 {% block content %}
    <h1>Login Page</h1>
 
+   {{ forms.userlogin() }}
+   
+   <!--
    {% for user in users %}
       <ul>
          {% for key,value in user %}
@@ -22,6 +27,6 @@
          {% endfor %}
       </ul>
    {% endfor %}
-   
+   -->
    
 {% endblock %}

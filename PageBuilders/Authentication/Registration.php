@@ -6,10 +6,12 @@ class Registration extends AuthenticationManager {
 
    function __construct() {
       parent::__construct();
+      
+
    }
 
-   public function registerUser($firstName, $lastName, $email, $accessLevel) {
-      return $this->authenticator->register($firstName, $lastName, $email, $accessLevel);
+   public function registerUser($email, $accessLevel, $firstName, $lastName) {
+      return $this->authenticator->register($email, $accessLevel, $firstName, $lastName);
    }
 
 }

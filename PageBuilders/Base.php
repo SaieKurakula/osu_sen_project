@@ -23,7 +23,10 @@ class Base {
    public function renderTemplate($template, $templateArguments = null) {
 
       if ($templateArguments) {
+
          echo $this->Twig->render($template, $templateArguments);
+
+
       }
       else {
          echo $this->Twig->render($template);

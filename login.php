@@ -7,11 +7,27 @@ $login = getPageBuilderClass('Authentication/','Login');
 
 $logout = getPageBuilderClass('Authentication/','Logout');
 
+$logout->logout();
+
+
 $users = $login->getUsersTest();
 
 $messages = [];
 
-$logout->logout();
+if (request('userlogin')) {
+   
+   if ($login->login(request('email'), request('password'))) {
+      $messages = $login->getSuccessMsg();
+   }
+   else {
+      $messages = $login->getErrorMsg();
+   }
+   
+}
+
+
+
+
 
 
 
@@ -20,12 +36,7 @@ $logout->logout();
  * Login Test
  *********************/
 
-// if ($login->login($username, $password)) {
-   // $messages = $login->getSuccessMsg();
-// }
-// else {
-   // $messages = $login->getErrorMsg();
-// }
+
 
 /************************
  * End Login Test

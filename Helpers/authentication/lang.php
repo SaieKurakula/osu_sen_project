@@ -43,12 +43,12 @@ $lang['en']['auth']['deletesession_invalid'] = "Invalid Session Hash !";
 
 $lang['en']['auth']['sessioninfo_invalid'] = "Invalid Session Hash !";
 
-$lang['en']['auth']['activate_username_empty'] = "Invalid URL !";
-$lang['en']['auth']['activate_username_short'] = "Invalid URL !";
-$lang['en']['auth']['activate_username_long'] = "Invalid URL !";
-$lang['en']['auth']['activate_key_empty'] = "Invalid URL !";
-$lang['en']['auth']['activate_key_short'] = "Invalid URL !";
-$lang['en']['auth']['activate_key_long'] = "Invalid URL !";
+$lang['en']['auth']['activate_username_empty'] = "Invalid URL 1 !";
+$lang['en']['auth']['activate_username_short'] = "Invalid URL 2!";
+$lang['en']['auth']['activate_username_long'] = "Invalid URL 3!";
+$lang['en']['auth']['activate_key_empty'] = "Invalid URL 4!";
+$lang['en']['auth']['activate_key_short'] = "Invalid URL 5!";
+$lang['en']['auth']['activate_key_long'] = "Invalid URL 6!";
 $lang['en']['auth']['activate_username_incorrect'] = "Username is incorrect !";
 $lang['en']['auth']['activate_account_activated'] = "Account is already activated !";
 $lang['en']['auth']['activate_success'] = "Account successfully activated !";

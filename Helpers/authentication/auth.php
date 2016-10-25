@@ -128,7 +128,7 @@ class auth
 	* @return boolean
 	*/
 	
-	function register($firstname, $lastname, $email, $accessLevel)
+	function register($email, $accessLevel, $firstname='', $lastname='')
 	{
 		
       include(PROJECT_PATH.'/Helpers/authentication/config.php');
@@ -495,7 +495,7 @@ class auth
 		// Input verification
 	
 		if(strlen($username) == 0) { $this->errormsg[] = $lang[$loc]['auth']['activate_username_empty']; return false; }
-		elseif(strlen($username) > 30) { $this->errormsg[] = $lang[$loc]['auth']['activate_username_long']; return false; }
+		elseif(strlen($username) > 100) { $this->errormsg[] = $lang[$loc]['auth']['activate_username_long']; return false; }
 		elseif(strlen($username) < 3) { $this->errormsg[] = $lang[$loc]['auth']['activate_username_short']; return false; }
 		elseif(strlen($key) == 0) { $this->errormsg[] = $lang[$loc]['auth']['activate_key_empty']; return false; }
 		elseif(strlen($key) > 15) { $this->errormsg[] = $lang[$loc]['auth']['activate_key_long']; return false; }
@@ -592,7 +592,7 @@ class auth
       $username = $email;
       
 		if(strlen($username) == 0) { $this->errormsg[] = $lang[$loc]['auth']['changepass_username_empty']; }
-		elseif(strlen($username) > 30) { $this->errormsg[] = $lang[$loc]['auth']['changepass_username_long']; }
+		elseif(strlen($username) > 100) { $this->errormsg[] = $lang[$loc]['auth']['changepass_username_long']; }
 		elseif(strlen($username) < 3) { $this->errormsg[] = $lang[$loc]['auth']['changepass_username_short']; }
 		if(strlen($currpass) == 0) { $this->errormsg[] = $lang[$loc]['auth']['changepass_currpass_empty']; }
 		elseif(strlen($currpass) < 5) { $this->errormsg[] = $lang[$loc]['auth']['changepass_currpass_short']; }
@@ -923,7 +923,7 @@ class auth
 		{
 		
 			if(strlen($username) == 0) { return false; }
-			elseif(strlen($username) > 30) { return false; }
+			elseif(strlen($username) > 100) { return false; }
 			elseif(strlen($username) < 3) { return false; }
 			elseif(strlen($key) == 0) { return false; }
 			elseif(strlen($key) < 15) { return false; }
