@@ -7,17 +7,25 @@ $activation = getPageBuilderClass('Authentication/','Activation');
 
 $messages = [];
 
-$key = request('key');
+// $key = request('key');
 
-if (request('useractivation')) {
-   if ($activation->activate(request('email'), request('password'), request('useractkey'))) {
+
+
+// if (request('useractivation')) {
+   // $email = request('email');
+   $email = urlencode('saie@test.com');
+   
+   // $password = request('password');
+   $password = sdfwenof4930x;
+
+   // if ($activation->activate(request('email'), request('password'), request('useractkey'))) {
       // $messages = $activation->getSuccessMsg();
-      header( "refresh:5; url=password.php?reset=true" ); 
-   }
-   else {
-      $messages = $activation->getErrorMsg();
-   }
-}
+      header( "refresh:2; url=password.php?fromactivation=true&email=$email&password=$password" ); 
+   // }
+   // else {
+      // $messages = $activation->getErrorMsg();
+   // }
+// }
 
 
 // $logout->logout();

@@ -12,8 +12,13 @@ class Password extends AuthenticationManager {
    
    
    // public function login($username, $password) {
-      // return $this->authenticator->login($username, $password);
+      // return $this->authenticator->changepass($username, $password);
    // }
 
+   public function resetPassword($email, $password, $newpassword, $verifynewpassword) {
+      return $this->authenticator->changepass($email, $password, $newpassword, $verifynewpassword);
+      
+   }
+   
 
 }

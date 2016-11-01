@@ -3,20 +3,43 @@
 require_once __DIR__ . '/setup/setup.php';
 
 
-$password = getPageBuilderClass('Authentication/','Password');
+$passwordAuth = getPageBuilderClass('Authentication/','Password');
+
 
 $messages = [];
 
-echo "Hello!";
+$email = request('email');
+$password = request('password');
+$fromactivation = request('fromactivation');
 
-// if (request('useractivation')) {
-   // if ($activation->activate(request('email'), request('password'), request('useractkey'))) {
-      // $messages = $activation->getSuccessMsg();
-   // }
-   // else {
-      // $messages = $activation->getErrorMsg();
-   // }
-// }
+// echo "Hello!";
 
 
-$password->renderTemplate('password.html',array('messages' => $messages));
+if (request('resetpassword')) {
+
+   if ($passwordAuth->resetPassword(
+      $email,
+      $password,
+      request('newpassword'),
+      request('verifynewpassword')
+   ) {
+      $messages = $passwordAuth->getSuccessMsg();
+   }
+   else {
+      $messages = $passwordAuth->getErrorMsg();
+   }
+   
+}
+
+
+
+
+$passwordAuth->renderTemplate(
+   'password.html',
+   array(
+      'messages' => $messages,
+      'email' => $email,
+      'password' => $password,
+      'fromactivation' => $fromactivation
+   )
+);

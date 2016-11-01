@@ -68,15 +68,31 @@
    </form>
 {% endmacro useractivation %}
 
-{% macro resetpassword() %}
+{% macro resetpassword(email, password, fromactivation) %}
    <form method="post">
+
+      {% if fromactivation == true %}
+         <input type="hidden" value={{ email }} class="form-control" id="email" name="email" ></input>
+         <input type="hidden" value={{ password }}class="form-control" id="password" name="password">
+         <input type="hidden" value={{ fromactivation }}class="form-control" id="fromactivation" name="fromactivation">
+      {% else %}
+         <div class="form-group">
+            <label for="email">Email address:</label>
+            <input type="email" class="form-control" id="email" name="email" required></input>
+         </div>
+         <div class="form-group">
+            <label for="password">Current Password:</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+         </div>
+      {% endif %}
+
       <div class="form-group">
-         <label for="email">Email address:</label>
-         <input type="email" class="form-control" id="email" name="email" required>
+         <label for="password">New Password:</label>
+         <input type="password" class="form-control" id="newpassword" name="newpassword" required>
       </div>
       <div class="form-group">
-         <label for="password">Password:</label>
-         <input type="password" class="form-control" id="password" name="password" required>
+         <label for="password">Verify New Password:</label>
+         <input type="password" class="form-control" id="verifynewpassword" name="verifynewpassword" required>
       </div>
       <input type="hidden" value="resetpassword" name="resetpassword"></input>
       <button type="submit" class="btn btn-default">Submit</button>
