@@ -48,9 +48,26 @@
          <input type="password" class="form-control" id="password" name="password" required>
       </div>
       <input type="hidden" value="userlogin" name="userlogin"></input>
+      {% if forgot == true %}
+         <input type="hidden" value={{ resetkey }} name="resetkey"></input>
+      {% endif %}
       <button type="submit" class="btn btn-default">Submit</button>
    </form>
 {% endmacro userlogin %}
+
+
+
+{% macro forgotpassword() %}
+   <form method="post">
+      <div class="form-group">
+         <label for="email">Email address:</label>
+         <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+      <input type="hidden" value="forgotpassword" name="forgotpassword"></input>
+      <button type="submit" class="btn btn-default">Submit</button>
+   </form>
+
+{% endmacro forgotpassword %}
 
 {% macro useractivation(key) %}
    <form method="post">
@@ -68,14 +85,19 @@
    </form>
 {% endmacro useractivation %}
 
-{% macro resetpassword(email, password, fromactivation) %}
+{% macro resetpassword(email, password, hideemailpassword, fromactivation, fromforgot, resetkey) %}
    <form method="post">
 
-      {% if fromactivation == true %}
+      {% if hideemailpassword == true %}
          <input type="hidden" value={{ email }} class="form-control" id="email" name="email" ></input>
-         <input type="hidden" value={{ password }}class="form-control" id="password" name="password">
-         <input type="hidden" value={{ fromactivation }}class="form-control" id="fromactivation" name="fromactivation">
-      {% else %}
+         <input type="hidden" value={{ password }} class="form-control" id="password" name="password">
+         {% if fromactivation == true %}
+            <input type="hidden" value={{ fromactivation }} class="form-control" id="fromactivation" name="fromactivation">
+         {% elseif fromforgot == true %}
+            <input type="hidden" value={{ fromforgot }} class="form-control" id="fromforgot" name="fromforgot">
+            <input type="hidden" value={{ resetkey }} class="form-control" id="resetkey" name="resetkey">
+         {% endif %}
+      {% else  %}
          <div class="form-group">
             <label for="email">Email address:</label>
             <input type="email" class="form-control" id="email" name="email" required></input>

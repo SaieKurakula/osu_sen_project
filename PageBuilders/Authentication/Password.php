@@ -8,17 +8,11 @@ class Password extends AuthenticationManager {
       parent::__construct();
    }
 
-// Will need to add forgot password functionality and reset password functionality
-   
-   
-   // public function login($username, $password) {
-      // return $this->authenticator->changepass($username, $password);
-   // }
-
-   public function resetPassword($email, $password, $newpassword, $verifynewpassword) {
+   public function changePassword($email, $password, $newpassword, $verifynewpassword) {
       return $this->authenticator->changepass($email, $password, $newpassword, $verifynewpassword);
-      
    }
    
-
+   public function resetForgottenPassword($email, $resetkey, $newpass, $verifynewpass) {
+      return $this->authenticator->resetpass($email, $resetkey, $newpass, $verifynewpass);
+   }
 }

@@ -97,7 +97,7 @@ $lang['en']['auth']['resetpass_newpass_short'] = "New Password is too short !";
 $lang['en']['auth']['resetpass_newpass_long'] = "New Password is too long !";
 $lang['en']['auth']['resetpass_newpass_username'] = "New Password cannot contain username !";
 $lang['en']['auth']['resetpass_newpass_nomatch'] = "Passwords don't match !";
-$lang['en']['auth']['resetpass_username_incorrect'] = "Error encountered !";
+$lang['en']['auth']['resetpass_username_incorrect'] = "Error RESET encountered !";
 $lang['en']['auth']['resetpass_success'] = "Password successfully changed !";
 $lang['en']['auth']['resetpass_key_incorrect'] = "Reset Key is incorrect !";
 

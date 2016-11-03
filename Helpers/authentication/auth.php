@@ -211,7 +211,7 @@ class auth
 						$message_cont = "Hello {$firstname} {$lastname}<br/><br/>";
 						$message_cont .= "You were recently registered for a new account on " . $auth_conf['site_name'] . "<br/>";
 						$message_cont .= "To activate your account please click the following link<br/><br/>";
-						$message_cont .= "<b><a href=\"" . $auth_conf['base_url'] . "?page=activate&key={$activekey}\">Activate my account</a></b><br />";
+						$message_cont .= "<b><a href=\"" . $auth_conf['base_url'] . "activation.php?page=activate&key={$activekey}\">Activate my account</a></b><br />";
                   $message_cont .= "Log in using the email: ". $email."<br />";
                   $message_cont .= "and the temporary password: ". $tempPassword."<br /><br />";
                   $message_cont .= "Once you log in, you will be asked to reset your password to one of your choosing.";
@@ -754,8 +754,9 @@ class auth
 		}
 		else
 		{
-			if($username == '0' && $key == '0')
+			if($username && $key== '0')
 			{
+            
 				if(strlen($email) == 0) { $this->errormsg[] = $lang[$loc]['auth']['resetpass_email_empty']; }
 				elseif(strlen($email) > 100) { $this->errormsg[] = $lang[$loc]['auth']['resetpass_email_long']; }
 				elseif(strlen($email) < 5) { $this->errormsg[] = $lang[$loc]['auth']['resetpass_email_short']; }
@@ -789,27 +790,45 @@ class auth
 				}
 				else
 				{
-					$query = $this->mysqli->prepare("UPDATE users SET resetkey=? WHERE username=?");
-					$query->bind_param("ss", $resetkey, $username);
+               
+               $tempPassword = $this->generateTempPassword();
+               $password = $this->hashpass($tempPassword);
+
+               $query = $this->mysqli->prepare("UPDATE users SET resetkey=?, password=? WHERE username=?");
+					$query->bind_param("sss", $resetkey, $password, $username);
 					$query->execute();
 					$query->close();
 					
 					$message_from = $auth_conf['email_from'];
+
 					$message_subj = $auth_conf['site_name'] . " - Password reset request !";
-					$message_cont = "Hello {$username}<br/><br/>";
+					
+               $message_cont = "Hello {$username}<br/><br/>";
 					$message_cont .= "You recently requested a password reset on " . $auth_conf['site_name'] . "<br/>";
 					$message_cont .= "To proceed with the password reset, please click the following link :<br/><br/>";
-					$message_cont .= "<b><a href=\"" . $auth_conf['base_url'] . "?page=forgot&username={$username}&key={$resetkey}\">Reset My Password</a></b>";
+
+               $urlEmail = urlencode($username);
+
+					$message_cont .= "<b><a href=\"" . $auth_conf['base_url'] . "login.php?forgot=true&username={$urlEmail}&resetkey={$resetkey}\">Reset My Password</a></b>";
+               $message_cont .= "Log in using the email: ". $email."<br />";
+               $message_cont .= "and the temporary password: ". $tempPassword."<br /><br />";
+               $message_cont .= "Once you log in, you will be asked to reset your password to one of your choosing.";
+               
 					$message_head = "From: {$message_from}" . "\r\n";
 					$message_head .= "MIME-Version: 1.0" . "\r\n";
 					$message_head .= "Content-type: text/html; charset=iso-8859-1" . "\r\n";
 						
+            echo $email;
+            echo $tempPassword;
+            echo $message_cont;
+            echo $message_head;
+            
 					mail($email, $message_subj, $message_cont, $message_head);
 					
 					$this->LogActivity($username, "AUTH_RESETPASS_SUCCESS", "Reset pass request sent to {$email} ( Key : {$resetkey} )");
 					
 					$this->successmsg[] = $lang[$loc]['auth']['resetpass_email_sent'];
-						
+
 					return true;
 				}
 			}
@@ -828,6 +847,7 @@ class auth
 				
 				if(count($this->errormsg) == 0)
 				{
+
 					$query = $this->mysqli->prepare("SELECT resetkey FROM users WHERE username=?");
 					$query->bind_param("s", $username);
 					$query->bind_result($db_key);

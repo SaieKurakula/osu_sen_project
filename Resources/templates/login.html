@@ -15,7 +15,33 @@
 {% block content %}
    <h1>Login Page</h1>
 
-   {{ forms.userlogin() }}
+
+   
+   
+   
+   <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#login">Login</a></li>
+      <li><a data-toggle="tab" href="#forgot">Forgot Password</a></li>
+<!--
+      <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+    --> 
+   </ul>
+
+   <div class="tab-content">
+      <div id="home" class="tab-pane fade in active">
+         {{ forms.userlogin() }}
+      </div>
+      <div id="forgot" class="tab-pane fade">
+         {{ forms.forgotpassword() }}
+      </div>
+<!--
+     <div id="menu2" class="tab-pane fade">
+       <h3>Menu 2</h3>
+       <p>Some content in menu 2.</p>
+     </div>
+     
+     -->
+   </div>
    
    <!--
    {% for user in users %}
