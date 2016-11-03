@@ -817,12 +817,7 @@ class auth
 					$message_head = "From: {$message_from}" . "\r\n";
 					$message_head .= "MIME-Version: 1.0" . "\r\n";
 					$message_head .= "Content-type: text/html; charset=iso-8859-1" . "\r\n";
-						
-            echo $email;
-            echo $tempPassword;
-            echo $message_cont;
-            echo $message_head;
-            
+
 					mail($email, $message_subj, $message_cont, $message_head);
 					
 					$this->LogActivity($username, "AUTH_RESETPASS_SUCCESS", "Reset pass request sent to {$email} ( Key : {$resetkey} )");
