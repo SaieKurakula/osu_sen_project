@@ -24,12 +24,12 @@ if (request('adduser')) {
    $email = request('email');
    $accessLevel = request('accessLevel');
 
-   // if ($registration->registerUser($firstName, $lastName, $email, $accessLevel)) {
-      // $messages = $registration->getSuccessMsg();
-   // }
-   // else {
-      // $messages = $registration->getErrorMsg();
-   // }
+   if ($registration->registerUser($email, $accessLevel, $firstName, $lastName)) {
+      $messages = $registration->getSuccessMsg();
+   }
+   else {
+      $messages = $registration->getErrorMsg();
+   }
 
 }
 
