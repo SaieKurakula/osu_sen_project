@@ -6,6 +6,9 @@ require_once(PROJECT_PATH.'/Resources/config/config.php');
 require_once(PROJECT_PATH.'/Helpers/database/mysqlconn.php');
 require_once(PROJECT_PATH.'/vendor/autoload.php');
 
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+
 // Check if Default DB Connection has been created.
 // If not then create connection.
 if (!(MysqlConn::getConnection('Default'))) {

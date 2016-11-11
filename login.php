@@ -42,7 +42,6 @@ if (request('userlogin')) {
 $login->renderTemplate(
    'login.html',
    array(
-      'users'=>$users,
       'messages' => $messages,
       'forgot'=>request('forgot'),
       'resetkey'=>request('resetkey')

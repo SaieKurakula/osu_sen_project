@@ -5,6 +5,8 @@ require_once(PROJECT_PATH.'/PageBuilders/Authentication/AuthenticationManager.ph
 class Logout extends AuthenticationManager {
 
    function __construct() {
+
+      
       parent::__construct();
    }
 

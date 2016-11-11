@@ -56,8 +56,20 @@
                         <li><a href="shortcodes.html">Shortcodes</a></li>
                      </ul>
                   </li>
-                  <li><a href="blog.html">Blog</a></li> 
-                  <li><a href="logout.php">Log Out</a></li>                        
+                  
+                  {% if accessLevel == "admin" %}
+                     <li><a href="adduser.php">Add User</a></li>
+                  {% endif %}
+                  
+                  {% if accessLevel == "normal" %}
+                     <li><a href="normal.php">Normal</a></li>
+                  {% endif %}
+                  
+                  {% if accessLevel != "NotSet" %}
+                     <li><a href="logout.php">Log Out</a></li>
+                  {% endif %}
+                  
+                  
                </ul>
             </div>
          </div><!--/.container-->

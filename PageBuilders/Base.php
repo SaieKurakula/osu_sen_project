@@ -12,8 +12,12 @@ class Base {
    
    
    function __construct() {
+
+      
       $this->buildDB();
       $this->buildTwig();
+      
+      
       $this->getAccessLevel();
    }
 
@@ -26,13 +30,10 @@ class Base {
       $this->Twig = new Twig_Environment($loader);
    }
    
-   protected getAccessLevel() {
+   protected function getAccessLevel() {
 
-      $this->accessLevel = isset($_SESSION['accessLevel']) ? $_SESSION['accessLevel'] : null;
-      
-      if ($this->accessLevel) {        
-         $this->baseTemplateArguments['accessLevel'] = $this->accessLevel;
-      }
+      $this->accessLevel = isset($_SESSION['accessLevel']) ? $_SESSION['accessLevel'] : 'NotSet';      
+      $this->baseTemplateArguments['accessLevel'] = $this->accessLevel;
 
    }
 
@@ -45,9 +46,9 @@ class Base {
       if (!empty($this->baseTemplateArguments)) {
          echo $this->Twig->render($template, $this->baseTemplateArguments);
       }
-      else {
-         echo $this->Twig->render($template);
-      }
+      // else {
+         // echo $this->Twig->render($template);
+      // }
 
    }
    
