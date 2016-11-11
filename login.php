@@ -4,19 +4,6 @@ require_once __DIR__ . '/setup/setup.php';
 
 $login = getPageBuilderClass('Authentication/','Login');
 
-// $logout = getPageBuilderClass('Authentication/','Logout');
-
-// $logout->logout();
-
-
-// $users = $login->getUsersTest();
-
-// foreach ($users as $user){
-   // var_dump($user);
-   
-   // echo "\n\n";
-// }
-
 $messages = [];
 
 if (request('forgotpassword')) {
@@ -29,8 +16,6 @@ if (request('forgotpassword')) {
    }
 
 }
-
-
 
 if (request('userlogin')) {
    
@@ -54,41 +39,6 @@ if (request('userlogin')) {
 }
 
 
-
-
-
-
-
- 
-/************************
- * Login Test
- *********************/
-
-
-
-/************************
- * End Login Test
- *********************/
- 
- 
-/************************
- * Logout Test
- *********************/
-
-
-// $login->logout();
-// $messages = $login->getSuccessMsg();
-
-
-/************************
- * END Logout Test
- *********************/
-
-
- 
-
-
-
 $login->renderTemplate(
    'login.html',
    array(
@@ -98,8 +48,3 @@ $login->renderTemplate(
       'resetkey'=>request('resetkey')
    )
 );
-
-
-
-
-

@@ -22,8 +22,6 @@ SQL;
    }
 
    public function getForgottenPassword($email) {
-      echo "hello!";
-      
       return $this->authenticator->resetpass($email);
    }
 
