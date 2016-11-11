@@ -19,11 +19,11 @@ class MysqlConn {
 
    }
 
-   public function setConnection($connectionName, $connection) {
+   public static function setConnection($connectionName, $connection) {
       self::$connections[$connectionName] = $connection;
    }
 
-   public function getConnection($connectionName='Default') {
+   public static function getConnection($connectionName='Default') {
       return isset(self::$connections[$connectionName]) ?
          self::$connections[$connectionName] : null;
    }
