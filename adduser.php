@@ -16,9 +16,7 @@ if (request('adduser')) {
    $lastName = request('firstname');
    $email = request('email');
    $accessLevel = request('accesslevel');
-   
-   var_dump($accessLevel);
-   die();
+
 
    if ($registration->registerUser($email, $accessLevel, $firstName, $lastName)) {
       $messages = $registration->getSuccessMsg();
