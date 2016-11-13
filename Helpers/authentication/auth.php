@@ -12,6 +12,9 @@ class auth
 		$this->mysqli = MysqlConn::getConnection();
 	}
 	
+   // KEEP THIS IN MIND IF NEEDING TO DEBUG QUERY EXECUTION 
+   // var_dump($query->error);
+   
 	/*
 	* Log user in via MySQL Database
 	* @param string $email
@@ -128,7 +131,7 @@ class auth
 	* @return boolean
 	*/
 	
-	function register($email, $accessLevel, $firstname='', $lastname='')
+	function register($email, $accessLevel, $region, $firstname='', $lastname='') 
 	{
 		
       include(PROJECT_PATH.'/Helpers/authentication/config.php');
@@ -191,6 +194,9 @@ class auth
 					{
 						// Email address isn't already used
 
+                  $accessLevel = (int)$accessLevel;
+                  $region = (int)$region;
+                  
                   $password = $this->generateTempPassword();
 
                   $tempPassword = $password;
@@ -199,18 +205,19 @@ class auth
 						$activekey = $this->randomkey(15);	 
 					
 						$query = $this->mysqli->prepare(
-                     "INSERT INTO users (username, password, email, activekey, firstname, lastname, acc_ID)
-                     VALUES (?, ?, ?, ?, ?, ?, ?)"
+                     "INSERT INTO users (username, password, email, activekey, firstname, lastname, acc_ID, reg_ID)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
                   );
 						$query->bind_param(
-                     "ssssssi",
+                     "ssssssii",
                      $username,
                      $password,
                      $email,
                      $activekey,
                      $firstname,
                      $lastname,
-                     $accessLevel
+                     $accessLevel,
+                     $region
                   );
 						$query->execute();
 						$query->close();

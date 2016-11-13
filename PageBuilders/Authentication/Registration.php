@@ -12,11 +12,23 @@ class Registration extends AuthenticationManager {
 
    }
 
-   public function registerUser($email, $accessLevel, $firstName, $lastName) {
-      return $this->authenticator->register($email, $accessLevel, $firstName, $lastName);
+   public function registerUser($email, $accessLevel, $region, $firstName, $lastName) {
+      return $this->authenticator->register($email, $accessLevel, $region, $firstName, $lastName);
    }
 
    public function getAccessLevels() {
       return $this->authenticator->getAccessLevels();
+   }
+   
+   public function getRegions() {
+      $query = <<<SQL
+SELECT
+   *
+FROM
+   region
+SQL;
+	
+		return $this->DB->execute($query);
+
    }
 }
