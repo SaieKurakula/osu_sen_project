@@ -27,7 +27,7 @@ SQL;
 
    public function login($email, $password) {
       if ($this->authenticator->login($email, $password)) {
-         $this->startSession($email);
+         $this->startSession($email, $this->authenticator->getUserAccesslevel($email));
          return true;
       }
       return false;

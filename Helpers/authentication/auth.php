@@ -199,10 +199,19 @@ class auth
 						$activekey = $this->randomkey(15);	 
 					
 						$query = $this->mysqli->prepare(
-                     "INSERT INTO users (username, password, email, activekey, firstname, lastname)
-                     VALUES (?, ?, ?, ?, ?, ?)"
+                     "INSERT INTO users (username, password, email, activekey, firstname, lastname, acc_ID)
+                     VALUES (?, ?, ?, ?, ?, ?, ?)"
                   );
-						$query->bind_param("ssssss", $username, $password, $email, $activekey, $firstname, $lastname);
+						$query->bind_param(
+                     "ssssssi",
+                     $username,
+                     $password,
+                     $email,
+                     $activekey,
+                     $firstname,
+                     $lastname,
+                     $accessLevel
+                  );
 						$query->execute();
 						$query->close();
 
@@ -244,6 +253,45 @@ class auth
 		}
 	}
 	
+   function getAccessLevels() {
+      
+      $query = $this->mysqli->prepare("SELECT * FROM user_access");
+		$query->execute();
+		$query->bind_result($id, $accessLevel);
+      
+      $accessLevels = [];
+      
+      while ($query->fetch()) {
+         $accessLevels[$id] = $accessLevel;
+      }
+
+      $query->close();
+
+      return $accessLevels;
+      
+   }
+   
+   function getUserAccesslevel($email) {
+
+      $query = $this->mysqli->prepare(
+         "SELECT
+            access_level
+         FROM
+            user_access ua
+            JOIN users u ON (u.acc_ID = ua.access_ID)
+         WHERE
+            email=?"
+      );
+
+		$query->bind_param("s", $email);
+		$query->bind_result($accesslevel);
+		$query->execute();
+		$query->fetch();
+		$query->close();
+      
+      return $accesslevel;
+   }
+   
 	/*
 	* Creates a new session for the provided username and sets cookie
 	* @param string $username
@@ -279,7 +327,7 @@ class auth
 		$expiredate = date("Y-m-d H:i:s", strtotime($auth_conf['session_duration']));
 		$expiretime = strtotime($expiredate);
 		
-		$query = $this->mysqli->prepare("INSERT INTO sessions (uid, username, hash, expiredate, ip) VALUES (?, ?, ?, ?, ?)");
+		$query = $this->mysqli->prepare("INSERT INTO sessions (userid, username, hash, expiredate, ip) VALUES (?, ?, ?, ?, ?)");
 		$query->bind_param("issss", $uid, $username, $hash, $expiredate, $ip);
 		$query->execute();
 		$query->close();
@@ -358,9 +406,9 @@ class auth
 		include(PROJECT_PATH.'/Helpers/authentication/config.php');
 		include(PROJECT_PATH.'/Helpers/authentication/lang.php');
 	
-		$query = $this->mysqli->prepare("SELECT uid, username, expiredate, ip FROM sessions WHERE hash=?");
+		$query = $this->mysqli->prepare("SELECT userid, username, expiredate, ip FROM sessions WHERE hash=?");
 		$query->bind_param("s", $hash);
-		$query->bind_result($session['uid'], $session['username'], $session['expiredate'], $session['ip']);
+		$query->bind_result($session['userid'], $session['username'], $session['expiredate'], $session['ip']);
 		$query->execute();
 		$query->store_result();
 		$count = $query->num_rows;

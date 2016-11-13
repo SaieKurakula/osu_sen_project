@@ -20,12 +20,13 @@ class AuthenticationManager extends Base {
       return $this->authenticator->successmsg;
    }
 
-   protected function startSession($email) {
+   protected function startSession($email, $accesslevel) {
       
       
       // Stores Session in session table
       $this->authenticator->newsession($email);
       $_SESSION['username'] = $email;
+      $_SESSION['accessLevel'] = $accesslevel;
    }
 
 

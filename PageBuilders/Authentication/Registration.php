@@ -4,6 +4,8 @@ require_once(PROJECT_PATH.'/PageBuilders/Authentication/AuthenticationManager.ph
 
 class Registration extends AuthenticationManager {
 
+   
+
    function __construct() {
       parent::__construct();
       
@@ -14,4 +16,7 @@ class Registration extends AuthenticationManager {
       return $this->authenticator->register($email, $accessLevel, $firstName, $lastName);
    }
 
+   public function getAccessLevels() {
+      return $this->authenticator->getAccessLevels();
+   }
 }
