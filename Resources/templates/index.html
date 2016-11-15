@@ -15,10 +15,19 @@
    
    <p>Does anything Show?</p>
    
-   <button>Admin Page 1</button>
-   <button>Admin Page 2</button>
-   <button>Admin Page 3</button>
 
+   
+   {% if accessLevel == "Admin" %}
+      <button>Admin Page 1</button>
+      <button>Admin Page 2</button>
+      <button>Admin Page 3</button>
+   {% endif %}
+
+   {% if accessLevel == "Normal" %}
+      <button>Normal Page 1</button>
+      <button>Normal Page 2</button>
+      <button>Normal Page 3</button>
+   {% endif %}
    
    
    
