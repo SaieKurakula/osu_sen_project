@@ -13,5 +13,44 @@
 {% block content %}
    <h1>Award a Certificate</h1>
 
+	<div id="giveawardform">    
+	
+	<form id="giveawawrd" method="post" action="giveaward.php">
+		<fieldset>    
+			<label>Insert your information in the following:</label><br>
+			
+			<label for="fullname">Your Full Name</label>
+			<input type="text" name="fullname"><br>
+		
+			<label for="email">Your E-mail</label>
+			<input type="email" name="a-email"><br>
+		
+			<label for="title">Your Job Title</label>
+			<input type="text" name="title"><br>
+		
+			<label for="award-type">Title of Award</label>
+			<input type="text" name="award-type"><br><br>
+
+			<label for="date">Date Awarded</label>
+			<input type="text" name="date"><br><br>
+					
+<!-- 			<label for="signature">Signature File</label> -->
+<!-- 			<input type="text" name="signature" value="signature.png"><br> -->
+	
+<!-- 			<label for="signature">Upload Your Signature</label> -->
+<!-- 			<input type="button" name="signature"> -->
+				
+			<label>Insert recipient's information in the following:</label><br>
+	
+			<label for="rname">Recipient's Full Name</label>
+			<input type="text" name="rname"><br>
+	
+			<label for="remail">Recipient's E-mail</label>
+			<input type="email" name="remail">
+	
+			<input type="submit" name="submit" id="submit" value="Send Certificate" />
+	
+		</fieldset>
+	</form>
 
 {% endblock %}
