@@ -16,13 +16,13 @@ $regions = $registration->getRegions();
 if (request('adduser')) {
 
    $firstName = request('firstname');
-   $lastName = request('firstname');
+   $lastName = request('lastname');
    $email = request('email');
    $accessLevel = request('accesslevel');
    $region = request('region');
 
 
-   if ($registration->registerUser($email, $accessLevel, $region, $firstName, $lastName)) {
+   if ($registration->registerUser($email, $accessLevel, $region, $firstName, $lastName)) {
       $messages = $registration->getSuccessMsg();
    }
    else {

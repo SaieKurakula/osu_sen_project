@@ -30,7 +30,7 @@ function isAccessiblePage() {
       'adduser.php' // THIS IS TEMP WE NEED TO REMOVE THIS
    );
 
-   $currentPage = basename($_SERVER[REQUEST_URI]);
+   $currentPage = basename($_SERVER['REQUEST_URI']);
 
    foreach($unauthenticatedPages as $page) {
       if (strpos($currentPage, $page) !== false) {

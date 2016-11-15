@@ -592,6 +592,11 @@ class auth
 				{
 
                // Password Doesn't match
+               
+               var_dump($this->hashpass($password));
+               var_dump($hashedPassword);
+               
+               
 					if ($this->hashpass($password) != $hashedPassword) {
                   $this->errormsg[] = $lang[$loc]['auth']['register_password_nomatch'];
                   return false;

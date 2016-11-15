@@ -30,14 +30,13 @@ if (request('userlogin')) {
          header( "refresh:1; url=password.php?fromforgot=true&email=$email&password=$password&resetkey=$resetkey");    
       }
       
-      $messages = $login->getSuccessMsg();
+      header('Location: index.php');
    }
    else {
       $messages = $login->getErrorMsg();
    }
    
 }
-
 
 $login->renderTemplate(
    'login.html',

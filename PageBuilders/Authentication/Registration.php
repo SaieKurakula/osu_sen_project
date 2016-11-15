@@ -4,12 +4,8 @@ require_once(PROJECT_PATH.'/PageBuilders/Authentication/AuthenticationManager.ph
 
 class Registration extends AuthenticationManager {
 
-   
-
    function __construct() {
       parent::__construct();
-      
-
    }
 
    public function registerUser($email, $accessLevel, $region, $firstName, $lastName) {
@@ -19,7 +15,7 @@ class Registration extends AuthenticationManager {
    public function getAccessLevels() {
       return $this->authenticator->getAccessLevels();
    }
-   
+
    public function getRegions() {
       $query = <<<SQL
 SELECT
@@ -27,7 +23,7 @@ SELECT
 FROM
    region
 SQL;
-	
+
 		return $this->DB->execute($query);
 
    }
