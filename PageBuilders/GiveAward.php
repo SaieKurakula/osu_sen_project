@@ -30,6 +30,7 @@ SQL;
 	VALUES
 	
 SQL;
+		return;
 	}
 	
 	public function createAward() {
