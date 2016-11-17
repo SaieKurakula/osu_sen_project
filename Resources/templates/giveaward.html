@@ -9,7 +9,7 @@
     <style type="text/css">
         .important { color: #336699; }
     </style>
-<!--    <script src="Resources/public/js/giveaward.js"></script>   -->
+
 {% endblock %}
 
 {% block content %}
@@ -17,7 +17,7 @@
 	<h1>Award a Certificate</h1>
 	
 	<h2>Enter the following information:</h2>
-	{{ forms.giveaward() }}
+	{{ forms.giveaward(firstname, lastname, email, awardTypes) }}
 	
 
 {% endblock %}
