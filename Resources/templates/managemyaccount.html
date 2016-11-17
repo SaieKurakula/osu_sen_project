@@ -2,18 +2,23 @@
 
 {% import "macros/forms.html" as forms %}
 
-{% block title %}Award a Certificate{% endblock %}
+{% block title %}Manage My Account{% endblock %}
 
 {% block head %}
     {{ parent() }}
     <style type="text/css">
         .important { color: #336699; }
     </style>
-<!--    <script src="Resources/public/js/giveaward.js"></script>   -->
+<!--    <script src="Resources/public/js/managemyaccount.js"></script>   -->
 {% endblock %}
 
 {% block content %}
-   <h1>Award a Certificate</h1>
+   <h1>Manage My Account</h1>
+   
+   
+   {{ forms.managemyaccount(firstname, lastname) }}
+   
+
 
 
 {% endblock %}
