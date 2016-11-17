@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/setup/setup.php';
 
-$award = getPageBuilderClass('GiveAward');
+$award = getPageBuilderClass('Award');
 
 //Will need to dynamically generate this from DB:
 $awardTypes = $award->getAwardType();
@@ -21,12 +21,10 @@ if(request('giveaward')) {
 	$recipientLName = request('rLName');
 	$awardType = request('awardType');
 	
-	saveAwardInfo();
+	award->saveAwardInfo();
 	
-	emailAward($email, $firstname, $lastname, $recipientEmail, $recipientFName, $recipientLName, $awardType);
+	award->emailAward($email, $firstname, $lastname, $recipientEmail, $recipientFName, $recipientLName, $awardType);
 }
-
-
 
 $award->renderTemplate('giveaward.html',
 	array(
