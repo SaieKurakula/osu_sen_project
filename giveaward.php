@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/setup/setup.php';
 
-$award = getPageBuilderClass('Award');
+$award = getPageBuilderClass('','Award');
 
 //Will need to dynamically generate this from DB:
 $awardTypes = $award->getAwardType();
