@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 define('PROJECT_PATH', realpath(dirname(__FILE__) . '/..'));
 
 require_once(PROJECT_PATH.'/Resources/config/config.php');
@@ -20,7 +22,9 @@ if (!(MysqlConn::getConnection('Default'))) {
 
 }
 
-session_start();
+// if (!isset($_SESSION)) {
+// }
+
 
 function isAccessiblePage() {
 

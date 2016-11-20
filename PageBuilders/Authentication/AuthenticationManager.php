@@ -13,16 +13,33 @@ class AuthenticationManager extends Base {
    }
 
    public function getErrorMsg() {
-      return $this->authenticator->errormsg;
+   
+      $message = '';
+
+      if (isset($this->errorMessage)) {
+         $message = $this->errorMessage;         
+      }
+      else {
+         $message = $this->authenticator->errormsg;
+      }
+
+      return $message;
    }
 
    public function getSuccessMsg() {
-      return $this->authenticator->successmsg;
+
+      if (isset($this->successMessage)) {
+         $message = $this->successMessage;
+      }
+      else {
+         $message = $this->authenticator->successmsg;
+      }
+      
+      return $message;
    }
 
    protected function startSession($email, $accesslevel) {
-      
-      
+
       // Stores Session in session table
       $this->authenticator->newsession($email);
       $_SESSION['username'] = $email;

@@ -8,29 +8,45 @@ class ManageMyAccount extends AuthenticationManager {
       parent::__construct();
    }
 
-   public function getUsersTest() {
+   public function getUserName() {
 
 $query = <<<SQL
    SELECT
-      *
+      firstname,
+      lastname
    FROM
       users
+   WHERE
+      username = ?
 SQL;
 
-      return $this->DB->execute($query);
+      return $this->DB->execute($query, array($_SESSION['username']));
 
    }
 
-   public function getForgottenPassword($email) {
-      return $this->authenticator->resetpass($email);
-   }
+   public function updateaccount($firstname, $lastname) {
 
-   public function login($email, $password) {
-      if ($this->authenticator->login($email, $password)) {
-         $this->startSession($email, $this->authenticator->getUserAccesslevel($email));
+$query = <<<SQL
+   UPDATE
+      users
+   SET
+      firstname = ?,
+      lastname = ?
+   WHERE
+      username = ?
+SQL;
+
+      $this->DB->execute($query, array($firstname, $lastname, $_SESSION['username']));
+      
+      if ($this->DB->getLastErrno() === 0) {
+         $this->addSuccessMsg('Update Successful');
          return true;
       }
-      return false;
+      else {
+         $this->addErrorMsg('Update failed. Error: '. $this->DB->getLastError());
+         return false;
+      }
+
    }
 
 }

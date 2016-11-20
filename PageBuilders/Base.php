@@ -10,14 +10,15 @@ class Base {
 
    protected $baseTemplateArguments = [];
    
+   protected $successMessage = [];
    
+   protected $errorMessage = [];
+
    function __construct() {
 
-      
       $this->buildDB();
       $this->buildTwig();
-      
-      
+
       $this->getAccessLevel();
    }
 
@@ -56,4 +57,20 @@ class Base {
       return $this->DB;
    }
 
+   public function addErrorMsg($message) {
+      $this->errorMessage[] = $message;
+   }
+
+   public function addSuccessMsg($message) {
+      $this->successMessage[] = $message;
+   }
+   
+   public function getErrorMsg() {
+      return $this->errorMessage;
+   }
+
+   public function getSuccessMsg() {
+      return $this->successMessage;
+   }
+   
 }

@@ -56,4 +56,12 @@ class DB {
       return $this->dbHandler;
    }
 
+   public function getLastErrno() {
+      return $this->dbHandler->getLastErrno();
+   }
+
+   public function getLastError() {
+      return $this->dbHandler->getLastError();
+   }
+
 }
