@@ -13,10 +13,13 @@
 {% endblock %}
 
 {% block content %}
-   <h1>Manage My Account</h1>
-   
-   
-   {{ forms.managemyaccount(firstname, lastname) }}
+   <div>
+      <h2>Update your first name and/or last name</h2>
+   </div>
+   <br />
+   <div>
+      {{ forms.managemyaccount(firstname, lastname) }}
+   </div>
    
 
 
