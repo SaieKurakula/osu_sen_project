@@ -20,10 +20,12 @@ if(request('giveaward')) {
 	$recipientFName = request('rFName');
 	$recipientLName = request('rLName');
 	$awardType = request('awardType');
+	$jobTitle = request('title');
 	
-	award->saveAwardInfo();
+	//create column headers for .csv
+	$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName')
 	
-	award->emailAward($email, $firstname, $lastname, $recipientEmail, $recipientFName, $recipientLName, $awardType);
+	award->createCSV($columns, $firstname, $lastname, $jobTitle, $recipientFName, $recipientLName, $awardType, $awardDate, $email, $recipientEmail);, 
 }
 
 $award->renderTemplate('giveaward.html',
