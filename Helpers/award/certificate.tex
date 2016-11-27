@@ -35,17 +35,21 @@
 %
 \begin{document}
 \sloppy
+\DTLloadDB{data}{data.csv}
 %
 \begin{landscape}
 	%
 	\pagestyle{empty}
+	\DTLforeach{data}{
+		\GFName=GiverFName, \GLName=GiverLName, \Title=Title, \Date=Date, \Type=Type, \RFName=RecFName, 	
+		\RLName=RecLName}{
 		\linespread{1.5}\selectfont
 		%---------------------------------------------------				
 		\begin{center}
 		\begin{minipage}[c]{7.2in}%
 			{\centering\bigskip
 			{\LARGE\bfseries {\color{SlateGrey}{{Department of Human Resources}}}}\\
-			{\large\bfseries\color{MediumTurquoise}{Employee of the Month}}\\
+			{\large\bfseries\color{MediumTurquoise}{\Type}}\\
 			{\Large\bfseries \color{MidnightBlue}{Certificate of Recognition}
 			\vskip0.25em
 			\par}}%
@@ -58,19 +62,20 @@
 		{
 		\doublespacing	
 		This is to recognize \uline{\emph{\large\sffamily\color{DarkTurquoise}
-		{Employee Name}}} for outstanding customer service and record monthly sales at 
-		\emph{\color{LightSlateGrey} {XYZ Sales Company}} on this day, {Today's Date}.
+		{\RFName \RLName}}} for outstanding customer service and record sales at 
+		\emph{\color{LightSlateGrey} {XYZ Sales Company}} on this day, {\Date}.
 		}
 		\end{center}
 		%
 		\vskip1.5em
 		%
 		\begin{minipage}[r]{4in}
-			\signature{}{John Smith \\ Manager }		
+			\signature{}{\GFName \GLName \\ \Title }		
 		\end{minipage}%
 		%
 		\vfil
 		\pagebreak
+}
 %
 \end{landscape}
 %
