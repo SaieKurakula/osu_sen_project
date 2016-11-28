@@ -25,6 +25,19 @@ if (request('updateaccount')) {
 
 }
 
+if (request('uploadsignature')) {
+
+   if ($managemyaccount->uploadSignature()) {
+      $messages = $managemyaccount->getSuccessMsg();
+   }
+   else {
+      $messages = $managemyaccount->getErrorMsg();
+   }
+
+}
+
+
+
 $managemyaccount->renderTemplate(
    'managemyaccount.html',
    array(
