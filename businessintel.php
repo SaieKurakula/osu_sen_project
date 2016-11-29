@@ -2,13 +2,13 @@
 
 require_once __DIR__ . '/setup/setup.php';
 
-$getreport = getPageBuilderClass('','BusinessIntel');
+$businessintel = getPageBuilderClass('','BusinessIntel');
 
 //$messages = [];
 
 //Will need to dynamically generate this from DB:
 $reportTypes = $businessintel->getReportType();
-$regions = $businessintel->getRegion();
+$regions = $businessintel->getRegions();
 $names = $businessintel->getNames();
 //$firstname = $businessintal->getFirstNames();
 
@@ -17,7 +17,7 @@ if (request('getreport')) {
 
 }
 
-$getreport->renderTemplate('businessintel.html',
+$businessintel->renderTemplate('businessintel.html',
 	array('reporttypes' => $reportTypes,
 			'regions' => $regions,
 			'names' => $names)

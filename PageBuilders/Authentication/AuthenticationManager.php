@@ -16,7 +16,7 @@ class AuthenticationManager extends Base {
    
       $message = '';
 
-      if (isset($this->errorMessage)) {
+      if (count($this->errorMessage)>0) {
          $message = $this->errorMessage;         
       }
       else {
@@ -28,7 +28,9 @@ class AuthenticationManager extends Base {
 
    public function getSuccessMsg() {
 
-      if (isset($this->successMessage)) {
+      $message = '';
+
+      if (count($this->successMessage)>0) {
          $message = $this->successMessage;
       }
       else {
