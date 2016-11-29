@@ -5,6 +5,8 @@ require_once(PROJECT_PATH.'/PageBuilders/Base.php');
 
 class Award extends Base {
 
+   protected $recipientFName;
+
 	function __construct() {
 		parent::__construct();
 	}
@@ -20,12 +22,22 @@ SQL;
 		return $this->DB->execute($query);
 	}
 
+   public function setRecipientFName($recipientFName) {
+      $this->recipientFName = $recipientFName;
+   }
+   
+   
 	//function to create the data CSV file
 	//calls createAward which in turn calls emailAward
 	//also calls saveAwardInfo to save the info in the database
 	public function createCSV($columns, $firstname, $lastname, $jobTitle, $recipientFName, $recipientLName, $awardType, $awardDate) {
-		$data = array($firstname, $lastname, $jobTitle, $awardDate, $awardType, $recipientFName, $recipeientLName);
 		
+      $this->setRecipientFName($recipientFName);
+      
+      $data = array($firstname, $lastname, $jobTitle, $awardDate, $awardType, $recipientFName, $recipientLName);
+		
+      
+      
 		//from http://php.net/manual/en/function.tmpfile.php in comments section for creating specific file extension
 		$temp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_ran()]=tmpfile())));
 		rename($temp, $temp.='.csv');
@@ -61,6 +73,8 @@ SQL;
 		//deciding whether to read file or just pass info
 		//$contents = fread($temp, filesize($temp));
 		
+      $rFName = $this->recipientFName;
+      
 		//from http://stackoverflow.com/questions/10606558/how-to-attach-pdf-to-email-using-php-mail-function
 		$mail = new PHPMailer();
 		

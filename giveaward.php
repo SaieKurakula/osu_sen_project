@@ -23,9 +23,9 @@ if(request('giveaward')) {
 	$jobTitle = request('title');
 	
 	//create column headers for .csv
-	$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName')
+	$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName');
 	
-	award->createCSV($columns, $firstname, $lastname, $jobTitle, $recipientFName, $recipientLName, $awardType, $awardDate, $email, $recipientEmail);, 
+	$award->createCSV($columns, $firstname, $lastname, $jobTitle, $recipientFName, $recipientLName, $awardType, $awardDate, $email, $recipientEmail);
 }
 
 $award->renderTemplate('giveaward.html',
