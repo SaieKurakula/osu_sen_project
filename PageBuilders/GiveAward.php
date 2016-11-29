@@ -25,8 +25,7 @@ SQL;
    public function setRecipientFName($recipientFName) {
       $this->recipientFName = $recipientFName;
    }
-   
-   
+
 	//function to create the data CSV file
 	//calls createAward which in turn calls emailAward
 	//also calls saveAwardInfo to save the info in the database

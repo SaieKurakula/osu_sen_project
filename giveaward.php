@@ -17,7 +17,7 @@ $lastame = request('lastname');
 if(request('giveaward')) {
 	$awardDate = request('date')
 	$recipientEmail = request('remail');
-	$recipientFName = request('rFName');
+	$award->setRecipientFName(request('rFName'));
 	$recipientLName = request('rLName');
 	$awardType = request('awardType');
 	$jobTitle = request('title');
