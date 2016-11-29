@@ -131,24 +131,25 @@ class auth
 	* @return boolean
 	*/
 	
-	function register($email, $accessLevel, $region, $firstname='', $lastname='') 
+	function register($email, $accessLevel, $firstname='', $lastname='') 
 	{
-		
+
       include(PROJECT_PATH.'/Helpers/authentication/config.php');
       include(PROJECT_PATH.'/Helpers/authentication/lang.php');
 
       $username = $email;
 
-		if(!isset($_COOKIE["auth_session"]))
+		if(isset($_COOKIE["auth_session"]) && $_SESSION['accessLevel']=='Admin')
 		{
 
          if(strlen($email) == 0) { $this->errormsg[] = $lang[$loc]['auth']['register_email_empty']; }
 			elseif(strlen($email) > 100) { $this->errormsg[] = $lang[$loc]['auth']['register_email_long']; }
 			elseif(strlen($email) < 5) { $this->errormsg[] = $lang[$loc]['auth']['register_email_short']; }
 			elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)) { $this->errormsg[] = $lang[$loc]['auth']['register_email_invalid']; }
-		
 			if(count($this->errormsg) == 0)
 			{
+            
+     
 				// Input is valid
 				$query = $this->mysqli->prepare("SELECT * FROM users WHERE username=?");
 				$query->bind_param("s", $username);
@@ -192,10 +193,12 @@ class auth
 					}
 					else 
 					{
+                  
+
 						// Email address isn't already used
 
                   $accessLevel = (int)$accessLevel;
-                  $region = (int)$region;
+
                   
                   $password = $this->generateTempPassword();
 
@@ -205,21 +208,21 @@ class auth
 						$activekey = $this->randomkey(15);	 
 					
 						$query = $this->mysqli->prepare(
-                     "INSERT INTO users (username, password, email, activekey, firstname, lastname, acc_ID, reg_ID)
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+                     "INSERT INTO users (username, password, email, activekey, firstname, lastname, acc_ID)
+                     VALUES (?, ?, ?, ?, ?, ?, ?)"
                   );
 						$query->bind_param(
-                     "ssssssii",
+                     "ssssssi",
                      $username,
                      $password,
                      $email,
                      $activekey,
                      $firstname,
                      $lastname,
-                     $accessLevel,
-                     $region
+                     $accessLevel
                   );
 						$query->execute();
+
 						$query->close();
 
 						$message_from = $auth_conf['email_from'];
@@ -255,7 +258,6 @@ class auth
 			// User is logged in
 		
 			$this->errormsg[] = $lang[$loc]['auth']['register_email_loggedin'];
-			
 			return false;
 		}
 	}

@@ -4,6 +4,11 @@ require_once __DIR__ . '/setup/setup.php';
 
 $login = getPageBuilderClass('Authentication/','Login');
 
+
+// $mailer = new PHPMailer();
+
+// var_dump($mailer);
+
 $messages = [];
 
 if (request('forgotpassword')) {

@@ -8,7 +8,7 @@ $messages = [];
 
 // Will Need to dynamically generate these
 $accesslevels = $registration->getAccessLevels();
-$regions = $registration->getRegions();
+// $regions = $registration->getRegions();
 
 
 
@@ -22,7 +22,7 @@ if (request('adduser')) {
    $region = request('region');
 
 
-   if ($registration->registerUser($email, $accessLevel, $region, $firstName, $lastName)) {
+   if ($registration->registerUser($email, $accessLevel, $firstName, $lastName)) {
       $messages = $registration->getSuccessMsg();
    }
    else {
@@ -32,4 +32,4 @@ if (request('adduser')) {
 }
 
 
-$registration->renderTemplate('adduser.html',array('messages' => $messages, 'accesslevels'=>$accesslevels, 'regions'=>$regions));
+$registration->renderTemplate('adduser.html',array('messages' => $messages, 'accesslevels'=>$accesslevels));
