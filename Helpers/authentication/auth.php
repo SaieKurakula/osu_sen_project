@@ -139,8 +139,8 @@ class auth
 
       $username = $email;
 
-		if(isset($_COOKIE["auth_session"]) && $_SESSION['accessLevel']=='Admin')
-		{
+		// if(isset($_COOKIE["auth_session"]) && $_SESSION['accessLevel']=='Admin')
+		// {
 
          if(strlen($email) == 0) { $this->errormsg[] = $lang[$loc]['auth']['register_email_empty']; }
 			elseif(strlen($email) > 100) { $this->errormsg[] = $lang[$loc]['auth']['register_email_long']; }
@@ -252,14 +252,14 @@ class auth
 			{
             return false;
 			}
-		}
-		else 
-		{
+		// }
+		// else 
+		// {
 			// User is logged in
 		
-			$this->errormsg[] = $lang[$loc]['auth']['register_email_loggedin'];
-			return false;
-		}
+			// $this->errormsg[] = $lang[$loc]['auth']['register_email_loggedin'];
+			// return false;
+		// }
 	}
 	
    function getAccessLevels() {
