@@ -6,6 +6,7 @@ $award = getPageBuilderClass('','Award');
 
 //Will need to dynamically generate this from DB:
 $awardTypes = $award->getAwardType();
+$
 
 //These are for the user session info (aka person giving award)
 //to pre-populate in form
@@ -15,13 +16,13 @@ $lastame = request('lastname');
 
 //This is when the form has been submitted:
 if(request('giveaward')) {
-	$awardDate = request('date')
-	$recipientEmail = request('remail');
+	$award->setGiverTitle(request('title'));
 	$award->setRecipientFName(request('rFName'));
-	$recipientLName = request('rLName');
-	$awardType = request('awardType');
-	$jobTitle = request('title');
-	
+	$award->setRecipientLName(request('rLName'));
+	$award->setRecipientEmail(request('remail'));
+	$award->setAwardType(request('awardType'));
+	$award->setAwardDate(request('date'));
+		
 	//create column headers for .csv
 	$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName');
 	
