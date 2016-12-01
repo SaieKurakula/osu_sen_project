@@ -51,6 +51,7 @@ if (request('resetpassword')) {
          $verifynewpassword
       )) {
          $messages = $passwordAuth->getSuccessMsg();
+         header('Location: index.php');
       }
       else {
          $messages = $passwordAuth->getErrorMsg();

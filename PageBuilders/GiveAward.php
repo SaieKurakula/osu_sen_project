@@ -3,7 +3,7 @@
 
 require_once(PROJECT_PATH.'/PageBuilders/Base.php');
 
-class Award extends Base {
+class GiveAward extends Base {
 
 	protected $giverFName;
 	protected $giverLName;
@@ -14,6 +14,8 @@ class Award extends Base {
 	protected $recipientEmail;
 	protected $awardType;
 	protected $awardDate;
+	//protected $awardCity;
+	protected $awardRegion;
 
 	function __construct() {
 		parent::__construct();
@@ -55,6 +57,14 @@ class Award extends Base {
 		$this->awardDate = $awardDate;
 	}
 	
+	// public function setAwardCity($awardCity) {
+	// 	$this->awardCity = $awardCity;
+	// }
+
+		public function setAwardRegion($awardRegion) {
+		$this->awardRegion = $awardRegion;
+	}
+
 	//queries the DB to get possible award types for drop down menu in form
 	public function getAwardType() {
 		$query = <<<SQL
@@ -66,6 +76,29 @@ SQL;
 		return $this->DB->execute($query);
 	}
 
+// 	//queries the DB to get possible award cities for drop down menu in form
+// 	public function getAwardCities() {
+// 		$query = <<<SQL
+//    		SELECT
+//       	city
+//    		FROM
+//       	region
+// SQL;
+// 		return $this->DB->execute($query);
+// 	}
+
+		//queries the DB to get possible award regions for drop down menu in form
+	public function getAwardRegions() {
+		$query = <<<SQL
+   		SELECT
+      	region_name
+   		FROM
+      	city
+SQL;
+		return $this->DB->execute($query);
+	}
+
+	//queries the DB to get user (aka the giver) info
 	public function getGiverInfo() {
 		$query = <<<SQL
 		SELECT
@@ -85,6 +118,9 @@ SQL;
 		      
 		$data = array($firstname, $lastname, $jobTitle, $awardDate, $awardType, $recipientFName, $recipientLName);
       
+		//create column headers for .csv
+		$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName');      
+
 		//from http://php.net/manual/en/function.tmpfile.php in comments section for creating specific file extension
 		$temp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_ran()]=tmpfile())));
 		rename($temp, $temp.='.csv');
@@ -108,33 +144,28 @@ SQL;
 	//still under construction
 	//function to actually create the pdf award from the latex script
 	public function createAward($temp){
-		$command = shell_exec('pdflatex certificate.ltx');
+		$command = shell_exec('pdflatex Helpers/award/certificate.tex');
 		$pdf = dirname(realpath('certificate.pdf'));
+		readfile($pdf);
 		emailAward($pdf);
-		
 	}
 	
 	//still under construction
 	//function to construct email with PDF of award attached
 	public function emailAward($temp) {
-		//deciding whether to read file or just pass info
-		//$contents = fread($temp, filesize($temp));
-		
-      $rFName = $this->recipientFName;
-      
 		//from http://stackoverflow.com/questions/10606558/how-to-attach-pdf-to-email-using-php-mail-function
 		$mail = new PHPMailer();
 		
-		$body = "Congratulations $rFName $rLName!!\n
-				$firstname $lastname has presented you with an award for \n
-				$awardType.See the attached document to view it.\n
+		$body = "Congratulations $this->recipientFName $this->recipientLName!!\n
+				$this->giverFName $this_->giverLName has presented you with an award for \n
+				$this->awardType.See the attached document to view it.\n
 				Thank you for your continued hard work!";
 		
-		$mail->AddReplyTo($email, $firstname $lastname);
-		$mail->SetFrom($email, $firstname $lastname);		
-		$mail->AddAddress($remail, $rFName $rLName);
+		$mail->AddReplyTo($this->giverEmail, $this->giverFName $this->giverLName);
+		$mail->SetFrom($this->giverEmail, $this->giverFName $this->giverLName);		
+		$mail->AddAddress($this->recipientEmail, $this->recipientFName $this->recipientLName);
 		
-		$mail->Subject = "$firstname $lastname has given you an award!";
+		$mail->Subject = "$this->recipientFName $this->recipientLName has given you an award!";
 		$mail->MsgHTML($body);
 		
 		mail->AddAttachment("award.pdf");
@@ -147,14 +178,46 @@ SQL;
 	}
 	
 	public function saveAwardInfo($temp){
-		//Not entirely sure yet how to send the info to the DB
-		//Do I need to query first to get the foreign key IDs?
-		//To be continued...
-		$query = <<<SQL
-	INSERT INTO award_record
-	VALUES
+		//query DB for user ID which is foreign key in award_record table
+		$userIDquery = <<<SQL
+		SELECT
+		id
+		FROM
+		users
+		WHERE
+		username = ?
+SQL;
+		$userID = $this->DB->execute($userIDquery, array($_SESSION['username']));
+		
+		//query DB for award ID which is foreign key in award_record table
+		$awardIDquery = <<<SQL
+		SELECT
+		id
+		FROM
+		award
+		WHERE
+		award_class = ?
+SQL;
+		$awardID = $this->DB->execute($awardIDquery, array(this->awardType));
+
+		//query DB for region ID which is foreign key in award_record table
+		$regionIDquery = <<<SQL
+		SELECT
+		region_id
+		FROM
+		region
+		WHERE
+		region_name = ?
+SQL;
+		$regionID = $this->DB->execute($regionIDquery, array(this->awardRegion));
+
+		$Insertquery = <<<SQL
+		INSERT INTO 
+		award_record (recipient_lname, recipient_fname, award_create_date, user_ID, awd_ID, reg_ID, recipient_email)
+		VALUES
+		($this->recipientLName, $this->recipientFName, $this->awardDate, $userID, $awardID, $regionID, $this->recipientEmail,)
 	
 SQL;
-		return;
+		return $this->DB->execute($Insertquery);
 	}
 }
