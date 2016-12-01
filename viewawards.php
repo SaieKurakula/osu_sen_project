@@ -15,7 +15,7 @@ $awardsFromUser = $viewawards->getUserGeneratedAwards();
 // if (request('deleteawards')) {
 
    $awardIDs = request('awardIDs');
-var_dump($awardIDs);
+// var_dump($awardIDs);
 
 
    // if ($viewawards->deleteUserGeneratedAwards($awardIDs)) {

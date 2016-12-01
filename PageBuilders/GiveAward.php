@@ -161,9 +161,9 @@ SQL;
 				$this->awardType.See the attached document to view it.\n
 				Thank you for your continued hard work!";
 		
-		$mail->AddReplyTo($this->giverEmail, $this->giverFName $this->giverLName);
-		$mail->SetFrom($this->giverEmail, $this->giverFName $this->giverLName);		
-		$mail->AddAddress($this->recipientEmail, $this->recipientFName $this->recipientLName);
+		$mail->AddReplyTo($this->giverEmail, $this->giverFName.' '.$this->giverLName);
+		$mail->SetFrom($this->giverEmail, $this->giverFName.' '.$this->giverLName);		
+		$mail->AddAddress($this->recipientEmail, $this->recipientFName.' '.$this->recipientLName);
 		
 		$mail->Subject = "$this->recipientFName $this->recipientLName has given you an award!";
 		$mail->MsgHTML($body);
@@ -215,9 +215,21 @@ SQL;
 		INSERT INTO 
 		award_record (recipient_lname, recipient_fname, award_create_date, user_ID, awd_ID, reg_ID, recipient_email)
 		VALUES
-		($this->recipientLName, $this->recipientFName, $this->awardDate, $userID, $awardID, $regionID, $this->recipientEmail,)
+		(?, ?, ?, ?, ?, ?, ?)
+		
 	
 SQL;
-		return $this->DB->execute($Insertquery);
+		return $this->DB->execute(
+         $Insertquery,
+         array(
+            $this->recipientLName,
+            $this->recipientFName,
+            $this->awardDate,
+            $userID,
+            $awardID,
+            $regionID,
+            $this->recipientEmail
+         )
+      );
 	}
 }
