@@ -8,6 +8,7 @@
             <link href="Resources/public/css/animate.min.css" rel="stylesheet">
             <link href="Resources/public/css/prettyPhoto.css" rel="stylesheet">
             <link href="Resources/public/css/main.css" rel="stylesheet">
+            <link href="Resources/public/css/custom.css" rel="stylesheet">
             <link href="Resources/public/css/responsive.css" rel="stylesheet">
          {% endblock %}
 
@@ -44,7 +45,7 @@
             <div class="collapse navbar-collapse navbar-right">
                <ul class="nav navbar-nav">
                   <li><a href="index.php">Home</a></li>
-                  <li><a href="about-us.html">About Us</a></li>
+                  
                   <li><a href="services.html">Services</a></li>
                   <li><a href="managemyaccount.php">Manage My Account</a></li>
                   <li class="dropdown">
@@ -62,6 +63,7 @@
                   {% endif %}
                   
                   {% if accessLevel == "Normal" %}
+                     <li><a href="viewawards.php">View Given Awards</a></li>
                      <li><a href="normal.php">Normal</a></li>
                   {% endif %}
                   

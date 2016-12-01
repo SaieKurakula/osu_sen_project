@@ -257,40 +257,36 @@
 {% macro viewawards(awardsFromUser) %}
 
    <form method="post">
-      <table>
+      <table class="table-bordered table-striped table-padding center-text">
          <thead>
            <tr>
                <th>Delete Award</th>
-               <th>stuff</th>
-               <th>stuff</th>
-               <th>stuff</th>
-               <th>stuff</th>
-               <th>stuff</th>
-               <th>stuff</th>
-               <th>stuff</th>
+               <th>Recipient</th>
+               <th>Award</th>
+               <th>Date Awarded</th>
+               <th>Recipient Email</th>
+               <th>City - Region</th>
            </tr>
          </thead>
          <tbody>
-{% for award in awardsFromUser %}
+            {% for award in awardsFromUser %}
                <tr>
                   <td>
                      <div class="form-group">
-                        PUT AWARD ID HERE ALONG WITH SELECT
-                        <input class="form-control" type="checkbox" name="awardIDs[]" value={{ award_recordID }}>
+                        <input class="form-control" type="checkbox" name="awardIDs[]" value={{ award.award_record_ID }}>
                      </div>
                   </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td>{{award.recipient_fname}} {{award.recipient_lname}}</td>
+                  <td>{{award.award_class}}</td>
+                  <td>{{award.award_create_date|date('d/m/Y')}}</td>
+                  <td>{{award.recipient_email}}</td>
+                  <td>{{award.city}} - {{award.region_name}}</td>
                </tr>
-{% endfor %}
+            {% endfor %}
          </tbody>
       </table>
       <input type="hidden" value="deleteawards" name="deleteawards"></input>
-      <button type="submit" class="btn btn-default">Submit</button>
+      <button type="submit" class="btn btn-warning margin-top-20">Delete Selected Awards</button>
    </form>
 
 {% endmacro viewawards %}

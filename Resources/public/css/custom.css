@@ -1,0 +1,12 @@
+.center-text {
+   text-align: center;
+}
+
+.table-padding td,
+.table-padding th {
+   padding: 5px 10px;
+}
+
+.margin-top-20 {
+   margin-top: 20px;
+}
