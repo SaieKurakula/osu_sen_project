@@ -5,10 +5,54 @@ require_once(PROJECT_PATH.'/PageBuilders/Base.php');
 
 class Award extends Base {
 
-   protected $recipientFName;
+	protected $giverFName;
+	protected $giverLName;
+	protected $giverEmail;
+	protected $giverTitle;
+	protected $recipientFName;
+	protected $recipientLName;
+	protected $recipientEmail;
+	protected $awardType;
+	protected $awardDate;
 
 	function __construct() {
 		parent::__construct();
+	}
+	
+	public function setGiverFName($giverFName) {
+		$this->giverFName = $giverFName;
+	}
+	
+	public function setGiverLName($giverLName) {
+		$this->giverLName = $giverLName;
+	}
+	
+	public function setGiverEmail($giverEmail) {
+		$this->giverEmail = $giverEmail;
+	}
+	
+	public function setGiverTitle($giverTitle) {
+		$this->giverTitle = $giverTitle;
+	}
+	
+	public function setRecipientFName($recipientFName) {
+		$this->recipientFName = $recipientFName;
+	}
+	
+	public function setRecipientLName($recipientLName) {
+		$this->recipientLName = $recipientLName;
+	}
+	
+	public function setRecipientEmail($recipientEmail) {
+		$this->recipientEmail = $recipientEmail;
+	}
+	
+	public function setAwardType($awardType) {
+		$this->awardType = $awardType;
+	}
+	
+	public function setAwardDate($awardDate) {
+		$this->awardDate = $awardDate;
 	}
 	
 	//queries the DB to get possible award types for drop down menu in form
@@ -22,20 +66,13 @@ SQL;
 		return $this->DB->execute($query);
 	}
 
-   public function setRecipientFName($recipientFName) {
-      $this->recipientFName = $recipientFName;
-   }
 
 	//function to create the data CSV file
 	//calls createAward which in turn calls emailAward
 	//also calls saveAwardInfo to save the info in the database
 	public function createCSV($columns, $firstname, $lastname, $jobTitle, $recipientFName, $recipientLName, $awardType, $awardDate) {
-		
-      $this->setRecipientFName($recipientFName);
-      
-      $data = array($firstname, $lastname, $jobTitle, $awardDate, $awardType, $recipientFName, $recipientLName);
-		
-      
+		      
+		$data = array($firstname, $lastname, $jobTitle, $awardDate, $awardType, $recipientFName, $recipientLName);
       
 		//from http://php.net/manual/en/function.tmpfile.php in comments section for creating specific file extension
 		$temp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_ran()]=tmpfile())));
