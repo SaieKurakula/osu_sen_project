@@ -10,16 +10,11 @@ $awardsFromUser = $viewawards->getUserGeneratedAwards();
 
 
 // This is when the form has been submitted.
-if (request('adduser')) {
+if (request('deleteawards')) {
 
-   $firstName = request('firstname');
-   $lastName = request('lastname');
-   $email = request('email');
-   $accessLevel = request('accesslevel');
-   $region = request('region');
+   $awardIDs = 
 
-
-   if ($registration->registerUser($email, $accessLevel, $firstName, $lastName)) {
+   if ($viewawards->deleteUserGeneratedAwards($awardIDs)) {
       $messages = $registration->getSuccessMsg();
    }
    else {
@@ -29,4 +24,4 @@ if (request('adduser')) {
 }
 
 
-$registration->renderTemplate('viewawards.html',array('messages' => $messages, 'accesslevels'=>$accesslevels));
+$registration->renderTemplate('viewawards.html',array('messages' => $messages, 'awardsFromUser'=>$awardsFromUser));
