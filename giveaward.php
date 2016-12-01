@@ -6,16 +6,21 @@ $award = getPageBuilderClass('','GiveAward');
 
 //Will need to dynamically generate this from DB:
 $awardTypes = $award->getAwardType();
-$
+var_dump($awardTypes);
+$giverInfo = $award->getGiverInfo();
+var_dump($giverInfo);
 
-//These are for the user session info (aka person giving award)
+/*//These are for the user session info (aka person giving award)
 //to pre-populate in form
-$email = request('email');
-$firstname = request('firstname');
-$lastame = request('lastname');
+$email = $_SESSION['username'];
+$firstname = $awardTypes[0];
+$lastame = $awardTypes[1];
 
 //This is when the form has been submitted:
 if(request('giveaward')) {
+	$award->setGiverFName($firstname);
+	$award->setGiverLName($lastname);
+	$award->setGiverEmail($email);
 	$award->setGiverTitle(request('title'));
 	$award->setRecipientFName(request('rFName'));
 	$award->setRecipientLName(request('rLName'));
@@ -37,4 +42,4 @@ $award->renderTemplate('giveaward.html',
 			'awardType'=>$awardTypes
 			
 	)
-);
+);*/

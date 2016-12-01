@@ -58,14 +58,25 @@ class Award extends Base {
 	//queries the DB to get possible award types for drop down menu in form
 	public function getAwardType() {
 		$query = <<<SQL
-   SELECT
-      *
-   FROM
-      award
+   		SELECT
+      	award_class
+   		FROM
+      	award
 SQL;
 		return $this->DB->execute($query);
 	}
 
+	public function getGiverInfo() {
+		$query = <<<SQL
+		SELECT
+		firstname lastname
+		FROM
+		users
+		WHERE
+		username = ?
+SQL;
+		return $this->DB->execute($query, array($_SESSION['username']));
+	}
 
 	//function to create the data CSV file
 	//calls createAward which in turn calls emailAward
