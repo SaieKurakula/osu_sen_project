@@ -7,10 +7,14 @@ $award = getPageBuilderClass('','GiveAward');
 //Will need to dynamically generate this from DB:
 $awardTypes = $award->getAwardType();
 var_dump($awardTypes);
+// $awardCities = $award->getAwardCities();
+// var_dump($awardCities);
+$awardRegions = $award->getAwardRegions();
+var_dump($awardRegions);
 $giverInfo = $award->getGiverInfo();
 var_dump($giverInfo);
 
-/*//These are for the user session info (aka person giving award)
+//These are for the user session info (aka person giving award)
 //to pre-populate in form
 $email = $_SESSION['username'];
 $firstname = $awardTypes[0];
@@ -27,11 +31,10 @@ if(request('giveaward')) {
 	$award->setRecipientEmail(request('remail'));
 	$award->setAwardType(request('awardType'));
 	$award->setAwardDate(request('date'));
-		
-	//create column headers for .csv
-	$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName');
-	
-	$award->createCSV($columns, $firstname, $lastname, $jobTitle, $recipientFName, $recipientLName, $awardType, $awardDate, $email, $recipientEmail);
+	//$award->setAwardCity(request('awardCity'));
+	$award->setAwardRegion(request('awardRegion'));
+
+	$award->createCSV();
 }
 
 $award->renderTemplate('giveaward.html',
@@ -39,7 +42,9 @@ $award->renderTemplate('giveaward.html',
 			'firstname'=>$firstname, 
 			'lastname'=>$lastname, 
 			'email'=>$email, 
-			'awardType'=>$awardTypes
+			'awardTypes'=>$awardTypes,
+			//'awardCities'=>$awardCities,
+			'awardRegions'=>$awardRegions
 			
 	)
-);*/
+);
