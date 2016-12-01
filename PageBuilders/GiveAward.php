@@ -3,7 +3,7 @@
 
 require_once(PROJECT_PATH.'/PageBuilders/Base.php');
 
-class Award extends Base {
+class GiveAward extends Base {
 
 	protected $giverFName;
 	protected $giverLName;
@@ -130,14 +130,14 @@ SQL;
 				$awardType.See the attached document to view it.\n
 				Thank you for your continued hard work!";
 		
-		$mail->AddReplyTo($email, $firstname $lastname);
-		$mail->SetFrom($email, $firstname $lastname);		
-		$mail->AddAddress($remail, $rFName $rLName);
+		$mail->AddReplyTo($email, $firstname.' '.$lastname);
+		$mail->SetFrom($email, $firstname.' '.$lastname);		
+		$mail->AddAddress($remail, $rFName.' '. $rLName);
 		
 		$mail->Subject = "$firstname $lastname has given you an award!";
 		$mail->MsgHTML($body);
 		
-		mail->AddAttachment("award.pdf");
+		$mail->AddAttachment("award.pdf");
 		
 		if(!$mail->Send()) {
 			echo "Mailer Error: " . $mail->ErrorInfo;
