@@ -224,29 +224,31 @@
 {% endmacro giveaward %}
 
 {% macro getreport(reporttypes, regions, names) %}
-	<form class="form-horizontal" method="post">
+<div class = "container">
+	<h2>Business Intelligence Reporting<h2> 
+	<br />
+	  	<!--<form class="form-horizontal" method="post">
 		<div class="form-group">
          <label for="typeofreport">Report Type:</label>
-		</div>
-		<div class = "dropdown">
-			<button type = "button" class = "btn dropdown-toggle" id = "dropdownMenu1" data-toggle = "dropdown">Reports
-				<span class = "caret"></span>
-			</button>
-				<ul class = "dropdown-menu" role = "menu" aria-labelledby = "dropdownMenu1">
-					{% for reporttype in reporttypes %}
-					<li role = "presentation">
-						<a role = "menuitem" tabindex = "-1" href = "#"> {{'reports.report_type'}}</a>
-					</li>
-					{% endfor %}
-				</ul>
-		</div>
-		<div class="form-group">
+		</div>-->
+	<div class = "dropdown">
+		<button type = "button" class = "btn dropdown-toggle" type="button" data-toggle = "dropdown">Reports
+		<span class = "caret"></span>
+		</button>
+		<ul class = "dropdown-menu" id = "reporttypes">
+			<li class = "dropdown-header">Available Reports</li>
+			{% for r in reporttypes %}
+			<li><a href = "report.php">{{ r.report_type|e }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+		<!-- <div class="form-group">
          <label for="reportparameter">Report Parameter</label>
          <input type="text" class="form-control" id="reportparameter" name="reportparameter" placeholder="Region, User, Month, Year, etc">
       </div>
 		<br />
 		<div class="form-group">
            <button type = "submit" value="getreport" name="getreport" class = "btn btn-default">Get Report</button>
-		</div>
-	</form>
+			 </div> -->
+</div>
 {% endmacro getreport %}
