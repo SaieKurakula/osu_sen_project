@@ -18,7 +18,7 @@ var_dump($giverInfo);
 //to pre-populate in form
 $email = $_SESSION['username'];
 $firstname = $awardTypes[0];
-$lastame = $awardTypes[1];
+$lastname = $awardTypes[1];
 
 //This is when the form has been submitted:
 if(request('giveaward')) {
