@@ -4,11 +4,6 @@ require_once __DIR__ . '/setup/setup.php';
 
 $login = getPageBuilderClass('Authentication/','Login');
 
-
-// $mailer = new PHPMailer();
-
-// var_dump($mailer);
-
 $messages = [];
 
 if (request('forgotpassword')) {
@@ -30,12 +25,16 @@ if (request('userlogin')) {
    if ($login->login($email, $password)) {
    
       $resetkey = request('resetkey');
+      
+      
       if ($resetkey) {
          $email = urlencode($email);
-         header( "refresh:1; url=password.php?fromforgot=true&email=$email&password=$password&resetkey=$resetkey");    
+         header( "Location: password.php?fromforgot=true&email=$email&password=$password&resetkey=$resetkey");    
+      } 
+      else {
+         header('Location: index.php');         
       }
       
-      header('Location: index.php');
    }
    else {
       $messages = $login->getErrorMsg();

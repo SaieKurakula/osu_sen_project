@@ -69,3 +69,7 @@ a div {
 header {
    border-bottom: thin solid black;
 }
+
+.manAcctBtn{
+   width: 30%;
+}

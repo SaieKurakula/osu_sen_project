@@ -37,11 +37,11 @@ if (request('resetpassword')) {
          )
       ) {
          $messages = $passwordAuth->getSuccessMsg();
+         header( "refresh:2; url=index.php"); 
       }
       else {
          $messages = $passwordAuth->getErrorMsg();
       }
-
    }
    else {
       if ($passwordAuth->changePassword(
@@ -51,7 +51,7 @@ if (request('resetpassword')) {
          $verifynewpassword
       )) {
          $messages = $passwordAuth->getSuccessMsg();
-         header('Location: index.php');
+         header( "refresh:2; url=index.php"); 
       }
       else {
          $messages = $passwordAuth->getErrorMsg();

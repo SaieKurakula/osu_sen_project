@@ -13,6 +13,8 @@
 {% endblock %}
 
 {% block content %}
+   <h1>Manage Account</h1>
+
    <div>
       <h2>Update your first name and/or last name</h2>
    </div>
@@ -21,13 +23,30 @@
       {{ forms.managemyaccount(firstname, lastname) }}
    </div>
    <br />
+   <br />
+   <div>
+      <h2>Update Your Password</h2>
+   </div>
+   <div class="manAcctBtn">
+      <a class="button-link" href="password.php">
+         <button type="button" class="btn btn-info btn-block btn-lg ">
+              <span class="glyphicon glyphicon-edit "></span>
+         </button>
+         <h3 class="btn-text">Change My Password</h3>
+      </a>
+   </div>
+   
+   
+   <br />
+   <br />
    <div>
       <h2>Upload Signature for Certificates</h2>
    </div>
    <div>
       {{ forms.uploadsignature() }}
    </div>
-   
+   <br />
+   <br />
    {% if signature %}
       <div>
          <h2>Current Signature</h2>

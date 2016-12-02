@@ -871,7 +871,7 @@ class auth
 
                $urlEmail = urlencode($username);
 
-					$message_cont .= "<b><a href=\"" . $auth_conf['base_url'] . "login.php?forgot=true&username={$urlEmail}&resetkey={$resetkey}\">Reset My Password</a></b>";
+					$message_cont .= "<b><a href=\"" . $auth_conf['base_url'] . "login.php?forgot=true&username={$urlEmail}&resetkey={$resetkey}\">Reset My Password</a></b><br /><br />";
                $message_cont .= "Log in using the email: ". $email."<br />";
                $message_cont .= "and the temporary password: ". $tempPassword."<br /><br />";
                $message_cont .= "Once you log in, you will be asked to reset your password to one of your choosing.";
