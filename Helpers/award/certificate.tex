@@ -1,6 +1,7 @@
-\documentclass[24pt]{scrartcl} %different doc type than normal because of layout
+\documentclass[fontsize=24pt]{scrartcl} %different doc type than normal because of layout
 \usepackage[a4paper,left=1.8cm,right=1.8cm,top=2cm,bottom=2cm,heightrounded]{geometry}
 \usepackage[svgnames]{xcolor} %for text colors
+\usepackage{datatool}
 \usepackage{pdflscape} %to make it a landscape awward
 \usepackage{setspace} %line spacing control
 \usepackage[utf8]{inputenc}
@@ -35,7 +36,7 @@
 %
 \begin{document}
 \sloppy
-\DTLloadDB{data}{data.csv}
+\DTLloaddb{data}{data.csv}
 %
 \begin{landscape}
 	%
@@ -63,7 +64,7 @@
 		\doublespacing	
 		This is to recognize \uline{\emph{\large\sffamily\color{DarkTurquoise}
 		{\RFName \RLName}}} for outstanding customer service and record sales at 
-		\emph{\color{LightSlateGrey} {XYZ Sales Company}} on this day, {\Date}.
+		\emph{\color{LightSlateGrey} {Bossa Nova Sales Company}} on this day, {\Date}.
 		}
 		\end{center}
 		%
