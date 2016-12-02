@@ -50,7 +50,7 @@ class GiveAward extends Base {
 	}
 	
 	public function setAwardType($awardType) {
-		$this->awardType = $awardType;
+		$this->awardType = (int)$awardType;
 	}
 	
 	public function setAwardDate($awardDate) {
@@ -62,7 +62,7 @@ class GiveAward extends Base {
 	// }
 
 		public function setAwardRegion($awardRegion) {
-		$this->awardRegion = $awardRegion;
+		$this->awardRegion = (int)$awardRegion;
 	}
 
 	//queries the DB to get possible award types for drop down menu in form
@@ -174,12 +174,22 @@ SQL;
 		$awardDir = PROJECT_PATH.'/Helpers/award';
 		$awardHandle = PROJECT_PATH.'/Helpers/award/certificate';
 		
-		$command = shell_exec('/user/bin/pdflatex -output-directory $awardDir --interaction batchmode $awardHandle');
+		$command = shell_exec('pdflatex -output-directory $awardDir --interaction batchmode $awardHandle');
+		
 		$pdf = PROJECT_PATH.'/Helpers/award/certificate.pdf';
-		readfile($pdf);
+		$this->showPDF($pdf);
 		$this->emailAward($pdf);
 	}
 	
+	//experiment function to show the PDF
+	public function showPDF($pdf){
+		header('Content-type: application/pdf');
+		header('Content-Disposition: inline; filename="certificate.pdf"');
+		header('Content-Transfer-Encoding:binary');
+		header('Accept-Ranges: bytes');
+		@readfile($pdf);
+	}
+
 	//function to construct email with PDF of award attached
 	public function emailAward($award) {
 		//from http://stackoverflow.com/questions/10606558/how-to-attach-pdf-to-email-using-php-mail-function
