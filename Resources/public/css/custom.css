@@ -1,3 +1,9 @@
+h1 {
+   color: black !important;
+   text-align: center;
+   margin-bottom: 50px;
+}
+
 .center-text {
    text-align: center;
 }
@@ -9,4 +15,40 @@
 
 .margin-top-20 {
    margin-top: 20px;
+}
+
+
+
+.hrButton {
+   width: 45%;
+   padding: 10%;
+   margin: 0 auto;
+   background-color: #428bca;
+}
+
+.hrButton:hover {
+   background-color: #428bca;
+}
+
+.glyphiconHRImg {
+   font-size: 3.0em;
+}
+
+a div {
+   padding-top: 10px;
+   border: 3px solid transparent;
+}
+
+.button-link:hover div {
+   border: 3px solid #265C8B;
+   -webkit-transition: all .2s ease-in-out;
+   -moz-transition: all .2s ease-in-out;
+   -o-transition: all .2s ease-in-out;
+   -ms-transition: all .2s ease-in-out;
+   transition: all .2s ease-in-out;
+
+}
+
+.btn-text {
+   text-align: center;
 }
