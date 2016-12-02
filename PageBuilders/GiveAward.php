@@ -128,7 +128,7 @@ SQL;
 		//naming the temp file with a .csv extension
 		//$tempfname = $this->tempnam_sfx(sys_get_temp_dir(), ".csv");
 		
-		$file = PROJECT_PATH.'Helpers/award/data.csv';
+		$file = PROJECT_PATH.'/Helpers/award/data.csv';
 		//http://wordpress.stackexchange.com/questions/179791/how-to-create-a-csv-on-the-fly-and-send-as-an-attachment-using-wp-mail
 		//opening .csv file
 		$fd = fopen($file, 'w');
@@ -175,7 +175,7 @@ SQL;
 		$awardHandle = PROJECT_PATH.'/Helpers/award/certificate';
 		
 		$command = shell_exec('/user/bin/pdflatex -output-directory $awardDir --interaction batchmode $awardHandle');
-		$pdf = PROJECT_PATH.'Helpers/award/award.pdf';
+		$pdf = PROJECT_PATH.'/Helpers/award/certificate.pdf';
 		readfile($pdf);
 		$this->emailAward($pdf);
 	}
@@ -207,7 +207,7 @@ SQL;
 	}
 
 	//function to save the award info to call it later when managing awards	
-	public function saveAwardInfo($temp){
+	public function saveAwardInfo(){
 		//query DB for user ID which is foreign key in award_record table
 		$userIDquery = <<<SQL
 		SELECT
@@ -217,22 +217,29 @@ SQL;
 		WHERE
 		username = ?
 SQL;
-		$userID = $this->DB->execute($userIDquery, array($_SESSION['username']));
+		$userID = $this->DB->execute($userIDquery, array($_SESSION['username']))[0]['id'];
 
 		$Insertquery = <<<SQL
 		INSERT INTO 
-		award_record (recipient_lname, recipient_fname, award_create_date, usr_ID, awd_ID, reg_ID, recipient_email)
+		award_record (recipient_lname, recipient_fname, usr_ID, awd_ID, reg_ID, recipient_email)
 		VALUES
-		(?, ?, ?, ?, ?, ?, ?)
+		(?, ?, ?, ?, ?, ?)
 		
 	
 SQL;
+
+		var_dump($this->recipientFName);
+		var_dump($this->recipientLName);
+		var_dump($userID);
+		var_dump($this->awardType);
+		var_dump($this->awardRegion);
+		var_dump($this->recipientEmail);
+
 		return $this->DB->execute(
          $Insertquery,
          array(
             $this->recipientLName,
             $this->recipientFName,
-            $this->awardDate,
             $userID,
             $this->awardType,
             $this->awardRegion,
