@@ -117,18 +117,28 @@ SQL;
 	public function createCSV() {
 		      
 		$data = array($this->giverFName, $this->giverLName, $this->giverTitle, $this->awardDate, $this->awardType, $this->recipientFName, $this->recipientLName);
-
+		echo "Data array complete";
+		
 		//create column headers for .csv
 		$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName');      
-
-		//from http://php.net/manual/en/function.tmpfile.php in comments section for creating specific file extension
-		$temp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_ran()]=tmpfile())));
-		rename($temp, $temp.='.csv');
+		echo "Columns array complete";
 		
+		//from http://php.net/manual/en/function.tmpfile.php in comments section for creating specific file extension
+		// $temp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_ran()]=tmpfile())));
+		// rename($temp, $temp.='.csv');
+		$name = tempnam('/tmp', 'csv');
+		$handle = fopen($name, 'w');
+		fputcsv($handle, $columns);
+		echo "Columns in temp";
+		fputcsv($handle, $data);
+		echo "Data in temp";
+		echo readfile($handle);
+
+
 		//Write column names & form data to .csv file
-		fwrite($temp, $columns);
-		fwrite($temp, $data);
-		fseek($temp, 0);
+		// fwrite($temp, $columns);
+		// fwrite($temp, $data);
+		// fseek($temp, 0);
 		
 		//while $temp file is still linked, createAward with the data
 		//createAward calls the emailAward function
