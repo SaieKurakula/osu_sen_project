@@ -17,8 +17,6 @@ h1 {
    margin-top: 20px;
 }
 
-
-
 .hrButton {
    width: 45%;
    padding: 10%;
@@ -51,4 +49,23 @@ a div {
 
 .btn-text {
    text-align: center;
+}
+
+#bossaNovaHeader {
+   font-size: 4.5em;
+   text-align: center;
+   margin: 35px;
+}
+
+#bossaNovaSubHeader {
+   font-size: 1.3em;
+   text-align: center;
+}
+
+.navbar {
+   font-size: 1.1em;
+}
+
+header {
+   border-bottom: thin solid black;
 }
