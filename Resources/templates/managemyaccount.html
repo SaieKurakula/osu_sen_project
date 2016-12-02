@@ -28,7 +28,19 @@
       {{ forms.uploadsignature() }}
    </div>
    
-<img src="Resources/public/images/signatures/kurakuls+lastnamebugfix@oregonstate.edu.png" alt="Smiley face">
+   {% if signature %}
+      <div>
+         <h2>Current Signature</h2>
+      </div>
+
+      <img src={{ signature }} alt="{{username}} signature">
+   {% else %}
+      <div>
+         <h2>No Signature On File</h2>
+      </div>
+
+   {% endif %}
+   
 
 
 {% endblock %}
