@@ -227,9 +227,9 @@
       <div class="form-group">
       	<label class="control-label col-sm-2" for="awardType">Award Type (select one):</label>
       	<div class="col-sm-10">
-         	<select class="form-control" id="awardType">
+         	<select class="form-control" id="awardType" name="awardType">
             {% for award in awardTypes %}
-				<option value={{'award.award_ID'}} name="awardType" required> {{ award.award_class }}</option>
+				<option value={{award.award_ID}} required> {{ award.award_class }}</option>
             {% endfor %}
          	</select>
         </div>
@@ -243,9 +243,9 @@
 <!--  <div class="form-group">
          <label class="control-label col-sm-2" for="awardCity">Award City (select one):</label>
          <div class="col-sm-10">
-            <select class="form-control" id="awardType">
+            <select class="form-control" id="awardType" name="awardCity">
             {% for city in awardCities %}
-            <option value={{'region.city'}} name="awardCity" required> {{ region.city }}</option>
+            <option value={{region.city}} required> {{ region.city }}</option>
             {% endfor %}
             </select>
         </div>
@@ -253,9 +253,9 @@
       <div class="form-group">
          <label class="control-label col-sm-2" for="awardRegion">Award Region (select one):</label>
          <div class="col-sm-10">
-            <select class="form-control" id="awardRegion">
+            <select class="form-control" id="awardRegion" name="awardRegion">
             {% for region in awardRegions %}
-            <option value={{'region.region_ID'}} name="awardRegion" required> {{ region.region_name }}</option>
+            <option value={{region.region_ID}} required> {{ region.region_name }}</option>
             {% endfor %}
             </select>
         </div>
