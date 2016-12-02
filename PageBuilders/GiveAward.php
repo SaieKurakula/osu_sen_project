@@ -118,23 +118,22 @@ SQL;
 	public function createCSV() {
 		//create column headers for .csv
 		$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName');      
-		echo "Columns array complete";
 
 		//create data array for .csv
 		$awardValues = array($this->giverFName, $this->giverLName, $this->giverTitle, $this->awardDate, $this->awardType, $this->recipientFName, $this->recipientLName);
-		echo "Values array complete";
 		
 		//an array of arrays for the for each function to fputcsv the data into the file
 		$csvData = array($columns, $awardValues);
 		
 		//naming the temp file with a .csv extension
-		$tempfname = $this->tempnam_sfx(sys_get_temp_dir(), ".csv");
+		//$tempfname = $this->tempnam_sfx(sys_get_temp_dir(), ".csv");
 		
+		$file = PROJECT_PATH.'Helpers/award/data.csv';
 		//http://wordpress.stackexchange.com/questions/179791/how-to-create-a-csv-on-the-fly-and-send-as-an-attachment-using-wp-mail
-		//opening temp .csv file
-		$fd = fopen($tempfname, 'w');
+		//opening .csv file
+		$fd = fopen($file, 'w');
 		if($fd === FALSE) {
-			die('Failed to open temporary file');
+			die('Failed to open file');
 		}
 
 		//putting column names and award values into the .csv
@@ -146,41 +145,43 @@ SQL;
     	rewind($fd);
     	fclose($fd);
 		
-		//while $temp file is still linked, createAward with the data
 		//createAward calls the emailAward function
 		echo "Creating Award";
-		$this->createAward($tempfname);
+		$this->createAward();
 	
-		//while $temp file is still linked, saveAwardInfo to database
 		echo "Saving award info to DB";
-		$this->saveAwardInfo($tempfname);
+		$this->saveAwardInfo();
 		
 		//register_shutdown_function(create_function('', "unlink('{$temp}');"));
-		echo "Unlinking File";
-		unlink($tempfname);
+		// echo "Unlinking File";
+		// unlink($tempfname);
 	}
 	
 	//to create a temp .csv filename
-	public function tempnam_sfx($path, $suffix) {
-		do {
-			$file = $path."/".mt_rand().$suffix;
-			$fp = @fopen($file, 'x');
-		} while (!$fp);
+	// public function tempnam_sfx($path, $suffix) {
+	// 	do {
+	// 		$file = $path."/".mt_rand().$suffix;
+	// 		$fp = @fopen($file, 'x');
+	// 	} while (!$fp);
 
-		fclose($fp);
-		return $file;
-	}
+	// 	fclose($fp);
+	// 	return $file;
+	// }
 
 	//function to actually create the pdf award from the latex script
-	public function createAward($temp){
-		$command = shell_exec('pdflatex Helpers/award/certificate');
-		$pdf = dirname(realpath('certificate.pdf'));
+	public function createAward(){
+		
+		$awardDir = PROJECT_PATH.'/Helpers/award';
+		$awardHandle = PROJECT_PATH.'/Helpers/award/certificate';
+		
+		$command = shell_exec('/user/bin/pdflatex -output-directory $awardDir --interaction batchmode $awardHandle');
+		$pdf = PROJECT_PATH.'Helpers/award/award.pdf';
 		readfile($pdf);
 		$this->emailAward($pdf);
 	}
 	
 	//function to construct email with PDF of award attached
-	public function emailAward($temp) {
+	public function emailAward($award) {
 		//from http://stackoverflow.com/questions/10606558/how-to-attach-pdf-to-email-using-php-mail-function
 		$mail = new PHPMailer();
 		
@@ -196,7 +197,7 @@ SQL;
 		$mail->Subject = "$this->giverFName $this->giverLName has given you an award!";
 		$mail->MsgHTML($body);
 		
-		$mail->AddAttachment("award.pdf");
+		$mail->AddAttachment($award);
 		
 		if(!$mail->Send()) {
 			echo "Mailer Error: " . $mail->ErrorInfo;
