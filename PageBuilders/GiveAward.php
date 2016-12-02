@@ -69,7 +69,7 @@ class GiveAward extends Base {
 	public function getAwardType() {
 		$query = <<<SQL
    		SELECT
-      	award_class
+      	award_ID, award_class
    		FROM
       	award
 SQL;
@@ -91,7 +91,7 @@ SQL;
 	public function getAwardRegions() {
 		$query = <<<SQL
    		SELECT
-      	region_name
+      	region_ID, region_name
    		FROM
       	region
 SQL;
@@ -117,11 +117,9 @@ SQL;
 	public function createCSV() {
 		      
 		$data = array($this->giverFName, $this->giverLName, $this->giverTitle, $this->awardDate, $this->awardType, $this->recipientFName, $this->recipientLName);
-      	var_dump($data);
 
 		//create column headers for .csv
 		$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName');      
-		var_dump($columns);
 
 		//from http://php.net/manual/en/function.tmpfile.php in comments section for creating specific file extension
 		$temp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_ran()]=tmpfile())));
@@ -146,7 +144,7 @@ SQL;
 	//still under construction
 	//function to actually create the pdf award from the latex script
 	public function createAward($temp){
-		$command = shell_exec('pdflatex Helpers/award/certificate.tex');
+		$command = shell_exec('pdflatex Helpers/award/certificate');
 		$pdf = dirname(realpath('certificate.pdf'));
 		readfile($pdf);
 		emailAward($pdf);
@@ -191,27 +189,27 @@ SQL;
 SQL;
 		$userID = $this->DB->execute($userIDquery, array($_SESSION['username']));
 		
-		//query DB for award ID which is foreign key in award_record table
-		$awardIDquery = <<<SQL
-		SELECT
-		id
-		FROM
-		award
-		WHERE
-		award_class = ?
-SQL;
-		$awardID = $this->DB->execute($awardIDquery, array($this->awardType));
+// 		//query DB for award ID which is foreign key in award_record table
+// 		$awardIDquery = <<<SQL
+// 		SELECT
+// 		id
+// 		FROM
+// 		award
+// 		WHERE
+// 		award_class = ?
+// SQL;
+// 		$awardID = $this->DB->execute($awardIDquery, array($this->awardType));
 
-		//query DB for region ID which is foreign key in award_record table
-		$regionIDquery = <<<SQL
-		SELECT
-		region_id
-		FROM
-		region
-		WHERE
-		region_name = ?
-SQL;
-		$regionID = $this->DB->execute($regionIDquery, array($this->awardRegion));
+// 		//query DB for region ID which is foreign key in award_record table
+// 		$regionIDquery = <<<SQL
+// 		SELECT
+// 		region_id
+// 		FROM
+// 		region
+// 		WHERE
+// 		region_name = ?
+// SQL;
+// 		$regionID = $this->DB->execute($regionIDquery, array($this->awardRegion));
 
 		$Insertquery = <<<SQL
 		INSERT INTO 
@@ -228,8 +226,8 @@ SQL;
             $this->recipientFName,
             $this->awardDate,
             $userID,
-            $awardID,
-            $regionID,
+            $this->awardType,
+            $this->regionType,
             $this->recipientEmail
          )
       );

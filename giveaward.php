@@ -6,7 +6,7 @@ $award = getPageBuilderClass('','GiveAward');
 
 //Will need to dynamically generate this from DB:
 $awardTypes = $award->getAwardType();
-//var_dump($awardTypes);
+var_dump($awardTypes);
 // $awardCities = $award->getAwardCities();
 // var_dump($awardCities);
 $awardRegions = $award->getAwardRegions();
