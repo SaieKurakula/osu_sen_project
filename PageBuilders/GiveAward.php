@@ -112,73 +112,92 @@ SQL;
 	}
 
 	//function to create the data CSV file
+	//calls tempnam_sfx to create a .csv file
 	//calls createAward which in turn calls emailAward
 	//also calls saveAwardInfo to save the info in the database
 	public function createCSV() {
-		      
-		$data = array($this->giverFName, $this->giverLName, $this->giverTitle, $this->awardDate, $this->awardType, $this->recipientFName, $this->recipientLName);
-		echo "Data array complete";
-		
 		//create column headers for .csv
 		$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName');      
-		echo "Columns array complete";
-		
-		//from http://php.net/manual/en/function.tmpfile.php in comments section for creating specific file extension
-		// $temp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_ran()]=tmpfile())));
-		// rename($temp, $temp.='.csv');
-		$name = tempnam('/tmp', 'csv');
-		$handle = fopen($name, 'w');
-		fputcsv($handle, $columns);
-		echo "Columns in temp";
-		fputcsv($handle, $data);
-		echo "Data in temp";
-		echo readfile($handle);
 
-
-		//Write column names & form data to .csv file
-		// fwrite($temp, $columns);
-		// fwrite($temp, $data);
-		// fseek($temp, 0);
+		//create data array for .csv
+		$awardValues = array($this->giverFName, $this->giverLName, $this->giverTitle, $this->awardDate, $this->awardType, $this->recipientFName, $this->recipientLName);
 		
-		//while $temp file is still linked, createAward with the data
+		//an array of arrays for the for each function to fputcsv the data into the file
+		$csvData = array($columns, $awardValues);
+		
+		//naming the temp file with a .csv extension
+		//$tempfname = $this->tempnam_sfx(sys_get_temp_dir(), ".csv");
+		
+		$file = PROJECT_PATH.'Helpers/award/data.csv';
+		//http://wordpress.stackexchange.com/questions/179791/how-to-create-a-csv-on-the-fly-and-send-as-an-attachment-using-wp-mail
+		//opening .csv file
+		$fd = fopen($file, 'w');
+		if($fd === FALSE) {
+			die('Failed to open file');
+		}
+
+		//putting column names and award values into the .csv
+    	foreach($csvData as $row) {
+        	fputcsv($fd, $row);
+    	}
+
+    	//rewind so the file reads from beginning when calling pdf latex, then close
+    	rewind($fd);
+    	fclose($fd);
+		
 		//createAward calls the emailAward function
-		createAward($temp);
+		echo "Creating Award";
+		$this->createAward();
 	
-		//while $temp file is still linked, saveAwardInfo to database
-		saveAwardInfo($temp);
+		echo "Saving award info to DB";
+		$this->saveAwardInfo();
 		
-		//I don't know if this goes before I do stuff with my temp file, or after
-		register_shutdown_function(create_function('', "unlink('{$temp}');"));
+		//register_shutdown_function(create_function('', "unlink('{$temp}');"));
+		// echo "Unlinking File";
+		// unlink($tempfname);
 	}
 	
-	//still under construction
+	//to create a temp .csv filename
+	// public function tempnam_sfx($path, $suffix) {
+	// 	do {
+	// 		$file = $path."/".mt_rand().$suffix;
+	// 		$fp = @fopen($file, 'x');
+	// 	} while (!$fp);
+
+	// 	fclose($fp);
+	// 	return $file;
+	// }
+
 	//function to actually create the pdf award from the latex script
-	public function createAward($temp){
-		$command = shell_exec('pdflatex Helpers/award/certificate');
-		$pdf = dirname(realpath('certificate.pdf'));
+	public function createAward(){
+		
+		$awardDir = PROJECT_PATH.'/Helpers/award';
+		$awardHandle = PROJECT_PATH.'/Helpers/award/certificate';
+		
+		$command = shell_exec('/user/bin/pdflatex -output-directory $awardDir --interaction batchmode $awardHandle');
+		$pdf = PROJECT_PATH.'Helpers/award/award.pdf';
 		readfile($pdf);
-		emailAward($pdf);
+		$this->emailAward($pdf);
 	}
 	
-	//still under construction
 	//function to construct email with PDF of award attached
-	public function emailAward($temp) {
+	public function emailAward($award) {
 		//from http://stackoverflow.com/questions/10606558/how-to-attach-pdf-to-email-using-php-mail-function
 		$mail = new PHPMailer();
 		
 		$body = "Congratulations $this->recipientFName $this->recipientLName!!\n
-				$this->giverFName $this_->giverLName has presented you with an award for \n
-				$this->awardType.See the attached document to view it.\n
+				$this->giverFName $this->giverLName has presented you with an award for \n
+				$this->awardType . See the attached document to view it.\n
 				Thank you for your continued hard work!";
 		
 		$mail->AddReplyTo("$this->giverEmail", "$this->giverFName $this->giverLName");
 		$mail->SetFrom("$this->giverEmail", "$this->giverFName $this->giverLName");		
 		$mail->AddAddress("$this->recipientEmail", "$this->recipientFName $this->recipientLName");
 		
-		$mail->Subject = "$this->recipientFName $this->recipientLName has given you an award!";
+		$mail->Subject = "$this->giverFName $this->giverLName has given you an award!";
 		$mail->MsgHTML($body);
 		
-		$mail->AddAttachment("award.pdf");
+		$mail->AddAttachment($award);
 		
 		if(!$mail->Send()) {
 			echo "Mailer Error: " . $mail->ErrorInfo;
@@ -186,7 +205,8 @@ SQL;
 			echo "Message sent.";
 		}
 	}
-	
+
+	//function to save the award info to call it later when managing awards	
 	public function saveAwardInfo($temp){
 		//query DB for user ID which is foreign key in award_record table
 		$userIDquery = <<<SQL
@@ -198,32 +218,10 @@ SQL;
 		username = ?
 SQL;
 		$userID = $this->DB->execute($userIDquery, array($_SESSION['username']));
-		
-// 		//query DB for award ID which is foreign key in award_record table
-// 		$awardIDquery = <<<SQL
-// 		SELECT
-// 		id
-// 		FROM
-// 		award
-// 		WHERE
-// 		award_class = ?
-// SQL;
-// 		$awardID = $this->DB->execute($awardIDquery, array($this->awardType));
-
-// 		//query DB for region ID which is foreign key in award_record table
-// 		$regionIDquery = <<<SQL
-// 		SELECT
-// 		region_id
-// 		FROM
-// 		region
-// 		WHERE
-// 		region_name = ?
-// SQL;
-// 		$regionID = $this->DB->execute($regionIDquery, array($this->awardRegion));
 
 		$Insertquery = <<<SQL
 		INSERT INTO 
-		award_record (recipient_lname, recipient_fname, award_create_date, user_ID, awd_ID, reg_ID, recipient_email)
+		award_record (recipient_lname, recipient_fname, award_create_date, usr_ID, awd_ID, reg_ID, recipient_email)
 		VALUES
 		(?, ?, ?, ?, ?, ?, ?)
 		
@@ -237,7 +235,7 @@ SQL;
             $this->awardDate,
             $userID,
             $this->awardType,
-            $this->regionType,
+            $this->awardRegion,
             $this->recipientEmail
          )
       );
