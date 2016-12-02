@@ -8,24 +8,20 @@ $messages = [];
 
 $awardsFromUser = $viewawards->getUserGeneratedAwards();
 
-// var_dump($awardsFromUser);
-
-
 // This is when the form has been submitted.
-// if (request('deleteawards')) {
+if (request('deleteawards')) {
 
    $awardIDs = request('awardIDs');
-// var_dump($awardIDs);
 
+   if ($viewawards->deleteUserGeneratedAwards($awardIDs)) {
+      $messages = $viewawards->getSuccessMsg();
+      header("refresh:2; url=viewawards.php"); 
+   }
+   else {
+      $messages = $viewawards->getErrorMsg();
+   }
 
-   // if ($viewawards->deleteUserGeneratedAwards($awardIDs)) {
-      // $messages = $registration->getSuccessMsg();
-   // }
-   // else {
-      // $messages = $registration->getErrorMsg();
-   // }
-
-// }
+}
 
 
 $viewawards->renderTemplate('viewawards.html',array('messages' => $messages, 'awardsFromUser'=>$awardsFromUser));
