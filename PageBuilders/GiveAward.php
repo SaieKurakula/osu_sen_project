@@ -117,9 +117,11 @@ SQL;
 	public function createCSV() {
 		      
 		$data = array($this->giverFName, $this->giverLName, $this->giverTitle, $this->awardDate, $this->awardType, $this->recipientFName, $this->recipientLName);
-      
+      	var_dump($data);
+
 		//create column headers for .csv
 		$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName');      
+		var_dump($columns);
 
 		//from http://php.net/manual/en/function.tmpfile.php in comments section for creating specific file extension
 		$temp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_ran()]=tmpfile())));
