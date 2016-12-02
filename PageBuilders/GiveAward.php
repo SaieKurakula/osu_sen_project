@@ -69,7 +69,7 @@ class GiveAward extends Base {
 	public function getAwardType() {
 		$query = <<<SQL
    		SELECT
-      	award_class
+      	award_ID, award_class
    		FROM
       	award
 SQL;
@@ -91,7 +91,7 @@ SQL;
 	public function getAwardRegions() {
 		$query = <<<SQL
    		SELECT
-      	region_name
+      	region_ID, region_name
    		FROM
       	region
 SQL;
@@ -189,27 +189,27 @@ SQL;
 SQL;
 		$userID = $this->DB->execute($userIDquery, array($_SESSION['username']));
 		
-		//query DB for award ID which is foreign key in award_record table
-		$awardIDquery = <<<SQL
-		SELECT
-		id
-		FROM
-		award
-		WHERE
-		award_class = ?
-SQL;
-		$awardID = $this->DB->execute($awardIDquery, array($this->awardType));
+// 		//query DB for award ID which is foreign key in award_record table
+// 		$awardIDquery = <<<SQL
+// 		SELECT
+// 		id
+// 		FROM
+// 		award
+// 		WHERE
+// 		award_class = ?
+// SQL;
+// 		$awardID = $this->DB->execute($awardIDquery, array($this->awardType));
 
-		//query DB for region ID which is foreign key in award_record table
-		$regionIDquery = <<<SQL
-		SELECT
-		region_id
-		FROM
-		region
-		WHERE
-		region_name = ?
-SQL;
-		$regionID = $this->DB->execute($regionIDquery, array($this->awardRegion));
+// 		//query DB for region ID which is foreign key in award_record table
+// 		$regionIDquery = <<<SQL
+// 		SELECT
+// 		region_id
+// 		FROM
+// 		region
+// 		WHERE
+// 		region_name = ?
+// SQL;
+// 		$regionID = $this->DB->execute($regionIDquery, array($this->awardRegion));
 
 		$Insertquery = <<<SQL
 		INSERT INTO 
@@ -226,8 +226,8 @@ SQL;
             $this->recipientFName,
             $this->awardDate,
             $userID,
-            $awardID,
-            $regionID,
+            $this->awardType,
+            $this->regionType,
             $this->recipientEmail
          )
       );
