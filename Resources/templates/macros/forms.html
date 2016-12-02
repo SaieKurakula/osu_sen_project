@@ -518,13 +518,26 @@
 {% endmacro giveaward %}
 
 {% macro getreport(reporttypes, regions, names) %}
-<div class = "container">
-	<h2>Business Intelligence Reporting<h2>
+<form class="form-horizontal" method="post" action="getreport.php">
+	<div class="col-sm-offset-1 col-sm-10">
+		<h2>Business Intelligence Reporting<h2>
+	</div>
 	<br />
+	<br />
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<label for="selectreport">Select Report Type:</label>
+			<select class="form-control" name="reporttype">
+				{% for r in reporttypes %}
+					<option value = "{{ r.report_type|e }}">{{ r.report_type|e }}</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
 	  	<!--<form class="form-horizontal" method="post">
 		<div class="form-group">
          <label for="typeofreport">Report Type:</label>
-		</div>-->
+		</div>
 	<div class = "dropdown">
 		<button type = "button" class = "btn dropdown-toggle" type="button" data-toggle = "dropdown">Reports
 		<span class = "caret"></span>
@@ -536,15 +549,16 @@
 			{% endfor %}
 		</ul>
 	</div>
-		<!-- <div class="form-group">
-         <label for="reportparameter">Report Parameter</label>
-         <input type="text" class="form-control" id="reportparameter" name="reportparameter" placeholder="Region, User, Month, Year, etc">
-      </div>
-		<br />
-		<div class="form-group">
-           <button type = "submit" value="getreport" name="getreport" class = "btn btn-default">Get Report</button>
-			 </div> -->
-</div>
+	<div class="form-group">
+      <label for="reportparameter">Report Parameter</label>
+			<input type="text" class="form-control" id="reportparameter" name="reportparameter" placeholder="Region, User, Month, Year, etc">
+	</div> -->
+	<br />
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button type = "submit" value="getreport" name="getreport" class = "btn btn-default">Get Report</button>
+		</div>
+</form>
 {% endmacro getreport %}
 
 {% macro viewawards(awardsFromUser) %}
