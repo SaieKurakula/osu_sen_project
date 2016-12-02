@@ -5,7 +5,8 @@ require_once(PROJECT_PATH.'/PageBuilders/Authentication/AuthenticationManager.ph
 class ManageMyAccount extends AuthenticationManager {
 
    protected $imageManager;
-
+   protected $mimeTypes = ['gif', 'png', 'jpeg'];
+   
    function __construct() {
       parent::__construct();
    }
@@ -52,8 +53,14 @@ SQL;
    }
 
    public function uploadSignature() {
+      
+      
+      if($currentSignature = $this->getUserSignature()) {
+         unlink($currentSignature);
+      }
 
-      // var_dump($_FILES);
+      $imageUploadSuccess = false;
+
       $this->imageManager = new Bulletproof\Image($_FILES);
       if($this->imageManager['signature']){
 
@@ -63,7 +70,7 @@ SQL;
          $this->imageManager->setSize(1, 500000); 
 
          // define acceptable mime types
-         $this->imageManager->setMime(['gif', 'png', 'jpeg']);  
+         $this->imageManager->setMime($this->mimeTypes);  
 
          // set max width/height limits (in pixels)
          // $this->imageManager->setDimension($width, $height); 
@@ -73,12 +80,31 @@ SQL;
          $this->imageManager->setLocation(PROJECT_PATH.'/Resources/public/images/signatures/');  
          
          if ($this->imageManager->upload()) {
-            echo "Hello!";
+            $this->successMessage[] = "Signature Uploaded";
+            $imageUploadSuccess =  true;
          }
          else {
-            echo $this->imageManager['error'];
+            $this->errorMessage[] = $this->imageManager['error'];
+
          }
       }
+      
+      return $imageUploadSuccess;
+
+   }
+   
+   
+   public function getUserSignature() {
+
+      foreach($this->mimeTypes as $type) {
+         $filename = "Resources/public/images/signatures/".$_SESSION['username'].".".$type;
+         if (file_exists($filename)) {
+            return $filename;
+         }
+      }
+
+      return false;
+
    }
    
 }

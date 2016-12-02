@@ -93,7 +93,7 @@ SQL;
    		SELECT
       	region_name
    		FROM
-      	city
+      	region
 SQL;
 		return $this->DB->execute($query);
 	}
@@ -102,7 +102,7 @@ SQL;
 	public function getGiverInfo() {
 		$query = <<<SQL
 		SELECT
-		firstname lastname
+		firstname, lastname
 		FROM
 		users
 		WHERE
@@ -114,12 +114,14 @@ SQL;
 	//function to create the data CSV file
 	//calls createAward which in turn calls emailAward
 	//also calls saveAwardInfo to save the info in the database
-	public function createCSV($columns, $firstname, $lastname, $jobTitle, $recipientFName, $recipientLName, $awardType, $awardDate) {
+	public function createCSV() {
 		      
-		$data = array($firstname, $lastname, $jobTitle, $awardDate, $awardType, $recipientFName, $recipientLName);
-      
+		$data = array($this->giverFName, $this->giverLName, $this->giverTitle, $this->awardDate, $this->awardType, $this->recipientFName, $this->recipientLName);
+      	var_dump($data);
+
 		//create column headers for .csv
 		$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName');      
+		var_dump($columns);
 
 		//from http://php.net/manual/en/function.tmpfile.php in comments section for creating specific file extension
 		$temp = array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_ran()]=tmpfile())));
@@ -161,14 +163,14 @@ SQL;
 				$this->awardType.See the attached document to view it.\n
 				Thank you for your continued hard work!";
 		
-		$mail->AddReplyTo($this->giverEmail, $this->giverFName.' '.$this->giverLName);
-		$mail->SetFrom($this->giverEmail, $this->giverFName.' '.$this->giverLName);		
-		$mail->AddAddress($this->recipientEmail, $this->recipientFName.' '.$this->recipientLName);
+		$mail->AddReplyTo("$this->giverEmail", "$this->giverFName $this->giverLName");
+		$mail->SetFrom("$this->giverEmail", "$this->giverFName $this->giverLName");		
+		$mail->AddAddress("$this->recipientEmail", "$this->recipientFName $this->recipientLName");
 		
 		$mail->Subject = "$this->recipientFName $this->recipientLName has given you an award!";
 		$mail->MsgHTML($body);
 		
-		mail->AddAttachment("award.pdf");
+		$mail->AddAttachment("award.pdf");
 		
 		if(!$mail->Send()) {
 			echo "Mailer Error: " . $mail->ErrorInfo;
@@ -198,7 +200,7 @@ SQL;
 		WHERE
 		award_class = ?
 SQL;
-		$awardID = $this->DB->execute($awardIDquery, array(this->awardType));
+		$awardID = $this->DB->execute($awardIDquery, array($this->awardType));
 
 		//query DB for region ID which is foreign key in award_record table
 		$regionIDquery = <<<SQL
@@ -209,7 +211,7 @@ SQL;
 		WHERE
 		region_name = ?
 SQL;
-		$regionID = $this->DB->execute($regionIDquery, array(this->awardRegion));
+		$regionID = $this->DB->execute($regionIDquery, array($this->awardRegion));
 
 		$Insertquery = <<<SQL
 		INSERT INTO 
