@@ -50,7 +50,7 @@ class GiveAward extends Base {
 	}
 	
 	public function setAwardType($awardType) {
-		$this->awardType = $awardType;
+		$this->awardType = (int)$awardType;
 	}
 	
 	public function setAwardDate($awardDate) {
@@ -62,7 +62,7 @@ class GiveAward extends Base {
 	// }
 
 		public function setAwardRegion($awardRegion) {
-		$this->awardRegion = $awardRegion;
+		$this->awardRegion = (int)$awardRegion;
 	}
 
 	//queries the DB to get possible award types for drop down menu in form
