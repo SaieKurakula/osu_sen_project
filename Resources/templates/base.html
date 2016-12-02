@@ -44,23 +44,19 @@
          <div class="container">
             <div class="collapse navbar-collapse navbar-right">
                <ul class="nav navbar-nav">
-                  <li><a href="index.php">Home</a></li>
-
-                  {% if accessLevel == "Admin" %}
-                     <li><a href="adduser.php">Add User</a></li>
-                     <li><a href="businessintel.php">Business Intelligence</a></li>
-                  {% endif %}
-                  
-                  {% if accessLevel == "Normal" %}
-                     <li><a href="giveaward.php">Give An Award</a></li>
-                     <li><a href="viewawards.php">View Awards Given</a></li>
-                  {% endif %}
-                  
-                  <li><a href="managemyaccount.php">Manage My Account</a></li>
                   {% if accessLevel != "NotSet" %}
+                     <li><a href="index.php">Home</a></li>
+                     {% if accessLevel == "Admin" %}
+                        <li><a href="adduser.php">Add User</a></li>
+                        <li><a href="businessintel.php">Business Intelligence</a></li>
+                     {% endif %}
+                     {% if accessLevel == "Normal" %}
+                        <li><a href="giveaward.php">Give An Award</a></li>
+                        <li><a href="viewawards.php">View Awards Given</a></li>
+                     {% endif %}
+                     <li><a href="managemyaccount.php">Manage My Account</a></li>
                      <li><a href="logout.php">Log Out</a></li>
                   {% endif %}
-
                </ul>
             </div>
          </div><!--/.container-->
