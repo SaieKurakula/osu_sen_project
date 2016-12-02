@@ -114,9 +114,9 @@ SQL;
 	//function to create the data CSV file
 	//calls createAward which in turn calls emailAward
 	//also calls saveAwardInfo to save the info in the database
-	public function createCSV($columns, $firstname, $lastname, $jobTitle, $recipientFName, $recipientLName, $awardType, $awardDate) {
+	public function createCSV() {
 		      
-		$data = array($firstname, $lastname, $jobTitle, $awardDate, $awardType, $recipientFName, $recipientLName);
+		$data = array($this->giverFName, $this->giverLName, $this->giverTitle, $this->awardDate, $this->awardType, $this->recipientFName, $this->recipientLName);
       
 		//create column headers for .csv
 		$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName');      
