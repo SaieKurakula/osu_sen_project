@@ -17,8 +17,8 @@ var_dump($giverInfo);
 //These are for the user session info (aka person giving award)
 //to pre-populate in form
 $email = $_SESSION['username'];
-$firstname = $awardTypes[0];
-$lastname = $awardTypes[1];
+$firstname = $giverInfo[0]['firstname'];
+$lastname = $giverInfo[0]['lastname'];
 
 //This is when the form has been submitted:
 if(request('giveaward')) {
