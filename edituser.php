@@ -7,18 +7,44 @@ $editUser = getPageBuilderClass('Authentication/','ViewEditUser');
 $messages = [];
 
 // Will Need to dynamically generate these
-$accesslevels = $viewEditUser->getAccessLevels();
+$accesslevels = $editUser->getAccessLevels();
+
+if (!$userID = request('userID')) {
+   header('Location: viewusers.php');
+}
+
+$user = $editUser->getUserInfo($userID);
+$user = $user[0];
+   
+$updateSuccess = false;
 
 // This is when the form has been submitted.
-if (!$userID = request('userID')) {
+if (request('updateuser')) {
+   
+   $firstname = request('firstname') == '' ? $user['firstname'] : request('firstname');
+   $lastname = request('lastname') == '' ? $user['lastname'] : request('lastname');
+   $accessID = request('accesslevel') == '' ? $user['acc_ID'] : request('accesslevel');   
 
-   if ($viewEditUser->deleteUsers($userIDs)) {
-      $messages = $viewEditUser->getSuccessMsg();
+   if ($editUser->editUser($userID, $firstname, $lastname, $accessID)) {
+      $messages = $editUser->getSuccessMsg();
+      $updateSuccess = true;
    }
    else {
-      $messages = $viewEditUser->getErrorMsg();
+      $messages = $editUser->getErrorMsg();
    }
 
 }
 
-$viewEditUser->renderTemplate('viewedituser.html',array('messages' => $messages));
+if ($updateSuccess) {
+   header("refresh:1; url=edituser.php?userID=$userID");
+}
+
+$editUser->renderTemplate(
+   'edituser.html',
+   array(
+      'messages' => $messages,
+      'user'=> $user,
+      'accessLevels' => $accesslevels
+   )
+);
+

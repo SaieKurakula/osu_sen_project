@@ -47,8 +47,7 @@ function isAdminPage() {
       'getreport.php',
       'businessintel.php',
       'viewusers.php',
-      'editusers.php'
-      
+      'edituser.php'
    ];
 
    return checkPages($adminPages);
