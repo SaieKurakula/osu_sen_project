@@ -162,7 +162,7 @@
 			<label for="selectreport">Select Report Type:</label>
 			<select class="form-control" name="reporttype">
 				{% for r in reporttypes %}
-					<option value = {{ 'r.report_type' }}>{{ r.report_type }}</option>
+					<option value = {{ r.report_type }}>{{ r.report_type }}</option>
 				{% endfor %}
 			</select>
 		</div>
