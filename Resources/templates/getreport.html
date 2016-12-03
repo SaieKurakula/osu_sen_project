@@ -24,22 +24,22 @@
 		<h1>Business Intelligence Report</h1>
 	</div>
 	<br />
-	{% if charttype == "-" %}{{ googlecharts.chart1() }}
+	{% if charttype == "Awards by Region" %}{{ googlecharts.chart1() }}
 		<input type="hidden" value={{ jsonTable1 }} id='h_v' class='h_v'>
 		<div id="columnchart" style="width: 1200px; height: 800px;"></div>
 	{% endif %}
 	
-	{% if charttype == "-" %}{{ googlecharts.chart2() }}
+	{% if charttype == "Awards Given by User" %}{{ googlecharts.chart2() }}
 		<input type="hidden" value={{ jsonTable2 }} id='h_v' class='h_v'>
 		<div id="columnchart" style="width: 1200px; height: 800px;"></div>
 	{% endif %}
 	
-	{% if charttype == "-" %}{{ googlecharts.chart3() }}
+	{% if charttype == "Awards Given By Year" %}{{ googlecharts.chart3() }}
 		<input type="hidden" value={{ jsonTable3 }} id='h_v' class='h_v'>
 		<div id="columnchart" style="width: 1200px; height: 800px;"></div>
 	{% endif %}
 	
-	{% if charttype == "-" %}{{ googlecharts.chart4() }}
+	{% if charttype == "Awards Given by Month (Current Year)" %}{{ googlecharts.chart4() }}
 		<input type="hidden" value={{ jsonTable4 }} id='h_v' class='h_v'>
 		<div id="columnchart" style="width: 1200px; height: 800px;"></div>
 	{% endif %}
