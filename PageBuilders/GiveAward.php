@@ -190,8 +190,7 @@ SQL;
 		$awardHandle = PROJECT_PATH.'/Helpers/award/certificate';
 		
 		chdir($awardDir);
-		$command = shell_exec("/usr/bin/pdflatex certificate.tex 2>&1");
-		var_dump($command);
+		$command = shell_exec("/usr/bin/pdflatex certificate.tex");
 		
 		$pdf = PROJECT_PATH.'/Helpers/award/certificate.pdf';
 		//$this->showPDF($pdf);
