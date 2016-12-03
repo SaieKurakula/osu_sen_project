@@ -6,6 +6,7 @@ $award = getPageBuilderClass('','GiveAward');
 
 //Will need to dynamically generate this from DB:
 $awardTypes = $award->getAwardType();
+var_dump($awardTypes);
 // $awardCities = $award->getAwardCities();
 $awardRegions = $award->getAwardRegions();
 $giverInfo = $award->getGiverInfo();
@@ -25,7 +26,35 @@ if(request('giveaward')) {
 	$award->setRecipientFName(request('rFName'));
 	$award->setRecipientLName(request('rLName'));
 	$award->setRecipientEmail(request('remail'));
-	$award->setAwardType(request('awardType'));
+	
+	//Since form gets an int for the award ID
+	//this if-else gets the name associated with that ID
+	//so the award has the award name
+	$IDnum = request('awardType');
+	// var_dump($IDnum);
+	// if ($IDnum === $awardRegions[0]['award_ID']) {
+	// 	$awardTypeName = $awardRegions[0]['award_class'];
+	// 	$award->setAwardType($awardTypeName);
+	// } 
+	// else if ($IDnum === $awardRegions[1]['award_ID']) {
+	// 	$awardTypeName = $awardRegions[1]['award_class'];
+	// 	$award->setAwardType($awardTypeName);
+	// } else echo "Error - invalid award type ID";
+	
+	$awardSet = false;
+
+	foreach ($awardRegions as $awReg) {
+  		if ($IDnum === $awReg['award_ID']) {
+    	$award->setAwardType($awReg['award_class']);
+    	$awardSet = true;
+  		}
+	}
+
+	if (!$awardSet) {
+  	echo "Error";
+	}
+
+	$award->setAwardTypeID(request('awardType'));
 	$award->setAwardDate(request('date'));
 	//$award->setAwardCity(request('awardCity'));
 	$award->setAwardRegion(request('awardRegion'));
