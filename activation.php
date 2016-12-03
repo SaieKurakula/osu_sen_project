@@ -21,7 +21,7 @@ if (request('useractivation')) {
    if ($activation->activate($email, $password, request('useractkey'))) {
       // $messages = $activation->getSuccessMsg();
       $email = urlencode($email);
-      header( "refresh:1; url=password.php?fromactivation=true&email=$email&password=$password" ); 
+      header( "Location: password.php?fromactivation=true&email=$email&password=$password" );
    }
    else {
       $messages = $activation->getErrorMsg();
