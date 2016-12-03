@@ -162,7 +162,7 @@
 			<label for="selectreport">Select Report Type:</label>
 			<select class="form-control" name="reporttype">
 				{% for r in reporttypes %}
-					<option value = {{ r.report_type }}>{{ r.report_type }}</option>
+					<option value = {{ r.report_ID }}>{{ r.report_type }}</option>
 				{% endfor %}
 			</select>
 		</div>
@@ -313,7 +313,7 @@
                   </td>
                   <td>{{award.recipient_fname}} {{award.recipient_lname}}</td>
                   <td>{{award.award_class}}</td>
-                  <td>{{award.award_create_date|date('d/m/Y')}}</td>
+                  <td>{{award.award_create_date|date('m/d/Y')}}</td>
                   <td>{{award.recipient_email}}</td>
                   <td>{{award.city}} - {{award.region_name}}</td>
                </tr>
