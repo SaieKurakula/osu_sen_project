@@ -39,25 +39,26 @@
    
    <br />
    <br />
-   <div>
-      <h2>Upload Signature for Certificates</h2>
-   </div>
-   <div>
-      {{ forms.uploadsignature() }}
-   </div>
-   <br />
-   <br />
-   {% if signature %}
+   {% if accessLevel == "Normal" %}
       <div>
-         <h2>Current Signature</h2>
+         <h2>Upload Signature for Certificates</h2>
       </div>
-
-      <img src={{ signature }} alt="{{username}} signature">
-   {% else %}
       <div>
-         <h2>No Signature On File</h2>
+         {{ forms.uploadsignature() }}
       </div>
+      <br />
+      <br />
+      {% if signature %}
+         <div>
+            <h2>Current Signature</h2>
+         </div>
 
+         <img src={{ signature }} alt="{{username}} signature">
+      {% else %}
+         <div>
+            <h2>No Signature On File</h2>
+         </div>
+      {% endif %}
    {% endif %}
    
 
