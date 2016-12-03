@@ -167,15 +167,9 @@ SQL;
     	fclose($fd);
 		
 		//createAward calls the emailAward function
-		echo "Creating Award";
 		$this->createAward();
 	
-		echo "Saving award info to DB";
 		$this->saveAwardInfo();
-		
-		//register_shutdown_function(create_function('', "unlink('{$temp}');"));
-		// echo "Unlinking File";
-		// unlink($tempfname);
 	}
 	
 	//to create a temp .csv filename
@@ -205,7 +199,8 @@ SQL;
 	}
 	
 	// //experiment function to show the PDF
-	// public function showPDF($pdf){
+	// //can't work until .tex compiles & PDF is created
+	//  public function showPDF($pdf){
 	// 	header('Content-type: application/pdf');
 	// 	header('Content-Disposition: inline; filename="certificate.pdf"');
 	// 	header('Content-Transfer-Encoding:binary');
