@@ -13,7 +13,7 @@ $jsonTable4 = $getreport->getGraph4();
 	//Will dynamically generate this from DB:
 //$awardsPerRegion = $getreport->getAwardsPerRegion();
 
-// $reportType = request('reporttype');
+$reportType = request('reporttype');
 // This is when the "get report type" has been submitted
 // if ($reportType == 'Awards by Region') {
 
@@ -23,5 +23,6 @@ $getreport->renderTemplate('getreport.html',
 	array('jsonTable1'=>$jsonTable1,
 			'jsonTable2'=>$jsonTable2,
 			'jsonTable3'=>$jsonTable3,
-			'jsonTable4'=>$jsonTable4)
+			'jsonTable4'=>$jsonTable4,
+			'charttype'=>$reportType)
 );
