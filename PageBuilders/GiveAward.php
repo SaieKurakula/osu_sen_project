@@ -13,6 +13,7 @@ class GiveAward extends Base {
 	protected $recipientLName;
 	protected $recipientEmail;
 	protected $awardType;
+	protected $awardTYpeID;
 	protected $awardDate;
 	//protected $awardCity;
 	protected $awardRegion;
@@ -50,9 +51,13 @@ class GiveAward extends Base {
 	}
 	
 	public function setAwardType($awardType) {
-		$this->awardType = (int)$awardType;
+		$this->awardType = $awardType;
 	}
 	
+	public function setAwardTypeID($awardTypeID) {
+		$this->awardTypeID = (int)$awardTypeID;
+	}
+
 	public function setAwardDate($awardDate) {
 		$this->awardDate = $awardDate;
 	}
@@ -227,6 +232,7 @@ SQL;
 		WHERE
 		username = ?
 SQL;
+		
 		$userID = $this->DB->execute($userIDquery, array($_SESSION['username']))[0]['id'];
 
 		$Insertquery = <<<SQL
@@ -234,16 +240,7 @@ SQL;
 		award_record (recipient_lname, recipient_fname, usr_ID, awd_ID, reg_ID, recipient_email)
 		VALUES
 		(?, ?, ?, ?, ?, ?)
-		
-	
 SQL;
-
-		var_dump($this->recipientFName);
-		var_dump($this->recipientLName);
-		var_dump($userID);
-		var_dump($this->awardType);
-		var_dump($this->awardRegion);
-		var_dump($this->recipientEmail);
 
 		return $this->DB->execute(
          $Insertquery,
@@ -251,10 +248,11 @@ SQL;
             $this->recipientLName,
             $this->recipientFName,
             $userID,
-            $this->awardType,
+            $this->awardTypeID,
             $this->awardRegion,
             $this->recipientEmail
          )
       );
 	}
 }
+
