@@ -81,3 +81,15 @@ header {
 #viewUsersTable{
    margin: 0 auto;
 }
+
+@media screen and (max-width: 993px) {
+   #bossaNovaHeader {
+      font-size: 2.9em;
+   }
+}
+
+@media screen and (max-width: 539px) {
+   #bossaNovaHeader {
+      font-size: 2.5em;
+   }
+}
