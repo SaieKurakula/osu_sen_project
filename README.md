@@ -20,3 +20,7 @@ I would suggest making your first account an admin to have privileges to create 
 You can use as many {OPTIONAL VALUE}'s as you want to create multiple accounts for testing.
 
 You are more than welcome to continue using kurakuls+admin2@oregonstate.edu / testing as the admin testing account.
+
+
+
+If you wish to deploy this on your system. You will also have to run composer and install the required vendor libraries
