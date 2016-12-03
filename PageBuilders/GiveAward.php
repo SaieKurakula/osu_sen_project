@@ -116,11 +116,27 @@ SQL;
 		return $this->DB->execute($query, array($_SESSION['username']));
 	}
 
+	//queries the DB to get user (aka the giver) info
+	public function getAwardName() {
+		$query = <<<SQL
+		SELECT
+		award_class
+		FROM
+		award
+		WHERE
+		award_ID = ?
+SQL;
+		return $this->DB->execute($query, array($this->awardTypeID));
+	}
 	//function to create the data CSV file
 	//calls tempnam_sfx to create a .csv file
 	//calls createAward which in turn calls emailAward
 	//also calls saveAwardInfo to save the info in the database
 	public function createCSV() {
+		//Because form returns awardTypeID, need to get name for certificate
+		$array = $this->getAwardName();
+ 		$this->setAwardType($array[0]['award_class']);
+
 		//create column headers for .csv
 		$columns = array('GiverFName', 'GiverLName', 'Title', 'Date', 'Type', 'RecFName', 'RecLName');      
 
@@ -179,7 +195,9 @@ SQL;
 		$awardDir = PROJECT_PATH.'/Helpers/award';
 		$awardHandle = PROJECT_PATH.'/Helpers/award/certificate';
 		
-		$command = shell_exec('pdflatex -output-directory $awardDir --interaction batchmode $awardHandle');
+		chdir($awardDir);
+		$command = shell_exec("/usr/bin/pdflatex certificate.tex 2>&1");
+		var_dump($command);
 		
 		$pdf = PROJECT_PATH.'/Helpers/award/certificate.pdf';
 		//$this->showPDF($pdf);
