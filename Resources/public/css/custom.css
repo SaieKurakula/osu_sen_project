@@ -17,6 +17,10 @@ h1 {
    margin-top: 20px;
 }
 
+.margin-left-100 {
+   margin-left: 100px;
+}
+
 .hrButton {
    width: 45%;
    padding: 10%;
@@ -72,4 +76,8 @@ header {
 
 .manAcctBtn{
    width: 30%;
+}
+
+#viewUsersTable{
+   margin: 0 auto;
 }

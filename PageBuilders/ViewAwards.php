@@ -56,6 +56,10 @@ SQL;
             $this->successMessage[] = "Awards Deleted";
             return true;
          }
+         else {
+            $this->errorMessage[] = "Awards Could Not Be Deleted";
+            return false;
+         }
 
       }
 

@@ -9,8 +9,6 @@ class Registration extends AuthenticationManager {
    }
 
    public function registerUser($email, $accessLevel, $firstName, $lastName) {
-
-      
       return $this->authenticator->register($email, $accessLevel, $firstName, $lastName);
    }
 

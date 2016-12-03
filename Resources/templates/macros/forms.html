@@ -325,3 +325,45 @@
    </form>
 
 {% endmacro viewawards %}
+
+
+{% macro viewusers(users) %}
+
+   <form method="post">
+      <table class="table-bordered table-striped table-padding center-text" id="viewUsersTable">
+         <thead>
+           <tr>
+               <th>Delete User</th>
+               <th>User</th>
+               <th>Username/Email</th>
+               <th>Date Created</th>
+               <th>Access Level</th>
+               <th>Edit User</th>
+           </tr>
+         </thead>
+         <tbody>
+            {% for user in users %}
+               <tr>
+                  <td>
+                     <div class="form-group">
+                        <input class="form-control" type="checkbox" name="userids[]" value={{ user.id }}>
+                     </div>
+                  </td>
+                  <td>{{user.firstname}} {{user.lastname}}</td>
+                  <td>{{user.username}}</td>
+                  <td>{{user.create_date|date('m/d/Y')}}</td>
+                  <td>{{user.access_level}}</td>
+                  <td>
+                     <a href="edituser.php?userID={{ user.id }}">
+                        <button type='button'><span>Edit</span></button>
+                     </a>
+                  </td>
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+      <input type="hidden" value="deleteusers" name="deleteusers"></input>
+      <button type="submit" class="btn btn-warning margin-top-20 margin-left-100">Delete Selected Users</button>
+   </form>
+
+{% endmacro viewusers %}

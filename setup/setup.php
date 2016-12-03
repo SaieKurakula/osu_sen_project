@@ -46,6 +46,9 @@ function isAdminPage() {
       'adduser.php',
       'getreport.php',
       'businessintel.php',
+      'viewusers.php',
+      'editusers.php'
+      
    ];
 
    return checkPages($adminPages);
