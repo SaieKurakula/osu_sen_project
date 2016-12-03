@@ -48,7 +48,7 @@ SQL;
 public function getGraph2() {
 	$query = <<<SQL
 	SELECT
-		CONCAT(users.lastname, ", ", users.firstname) AS user,
+		CONCAT(users.lastname, ",", users.firstname) AS user,
 		COUNT(award_record.award_record_ID) AS award_count
 	FROM users
 		INNER JOIN award_record ON users.id=award_record.usr_ID
