@@ -94,6 +94,8 @@ public function getGraph3() {
 		award_year
 SQL;
 
+	$result = $this->DB->execute($query);
+	
 	$rows = array();
 	$table = array();
 	$table['cols'] = array(
@@ -131,6 +133,8 @@ public function getGraph4() {
 		award_month
 SQL;
 
+	$result = $this->DB->execute($query);
+	
 	$rows = array();
 	$table = array();
 	$table['cols'] = array(
@@ -147,7 +151,7 @@ SQL;
       $rows[] = array('c' => $temp);
     }
 
-	$result->free();
+	//$result->free();
 	$table['rows'] = $rows;
 
 		// convert data into JSON format
